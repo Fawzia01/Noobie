@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import './app.css';
+import Navbar from './Components/Navbar/Navbar';
+import Home from './Components/Home/home';
+import Main from './Components/Mains/Main';
+import Footer from './Components/Footer/footer';
+import LoginRegister from './Components/loginregister/LoginRegister';
+import About from './Components/About/about';
+import Contact from './Components/Contact/contact'; 
+import Dashboard from './Components/Dashboard/dashboarduser';
 
-function App() {
+const App = () => {
+  const location = useLocation();
+
+  // Check if the current path is not '/login' or '/dashboard' to display the navbar
+  const showNavbar = location.pathname !== "/login" && location.pathname !== "/dashboard";
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {showNavbar && <Navbar />} {/* Conditionally render Navbar */}
+      <Routes>
+        <Route path="/" element={
+          <>
+            <Home />
+            <Main />
+            <Footer />
+          </>
+        } />
+        <Route path="/login" element={<LoginRegister />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} /> 
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </div>
   );
-}
+};
 
-export default App;
+// Main App component wrapped in Router
+const AppWrapper = () => {
+  return (
+    <Router>
+      <App /> {/* App is now directly inside the Router */}
+    </Router>
+  );
+};
+
+export default AppWrapper;
