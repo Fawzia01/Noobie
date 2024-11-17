@@ -1,11 +1,9 @@
-import React from 'react'
+import React from 'react';
 import ReactDOM from "react-dom/client";
-import App from './App';
-// src/index.js
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import App from './App';  // Import App component
+import "@fortawesome/fontawesome-free/css/all.min.css";  // Import FontAwesome styles
 
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
-
-
-const root= ReactDOM.createRoot(document.getElementById('root'))
-root.render(<App/>);
+// Render the App directly without a router here, as it is already handled in App.js
+root.render(<App />);

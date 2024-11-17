@@ -14,12 +14,14 @@ import AdminDash from './Components/AdminDash/admindash';
 import Ebooks from './Components/Dashboard/Functions/Ebook/ebooks';
 import AudiobookPlayer from './Components/Dashboard/Functions/Ebook/audio';
 import Payment from './Components/Dashboard/Functions/Payment/payment';
+import Book from './Components/Dashboard/Functions/Book/book';
+import BookDetails from './Components/Dashboard/Functions/Book/bookdetail';
 
 const App = () => {
   const location = useLocation();
 
   // Define paths where Navbar should be hidden
-  const navbarHiddenPaths = ['/login', '/intermediate', '/dashboarduser', '/admindash', '/ebooks', '/audio','/payment'];
+  const navbarHiddenPaths = ['/login', '/intermediate', '/dashboarduser', '/admindash', '/ebooks', '/audio','/payment','/book','/bookdetail'];
   const showNavbar = !navbarHiddenPaths.includes(location.pathname);
 
   return (
@@ -42,6 +44,8 @@ const App = () => {
         <Route path="/audio" element={<AudiobookPlayer />} />
         <Route path="/admindash" element={<AdminDash />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/book" element={<Book />} />
+        <Route path="/bookdetail" element={<BookDetails />} />
       </Routes>
     </div>
   );

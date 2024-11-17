@@ -9,7 +9,8 @@ function Sidebar({ isExpanded }) {
   return (
     <div className={`sidebar ${isExpanded ? "expanded" : ""}`}>
       <ul className="sidebar-items">
-        <li><i className="fas fa-book"></i> {isExpanded && "Book Catalogue"}</li>
+       <li> <Link to='/book'>
+        <i className="fas fa-book"></i> {isExpanded && "Book Catalogue"} </Link></li>
        <li>
           <Link to="/ebooks">
             <i className="fas fa-tablet-alt"></i> {isExpanded && "eBooks"}
