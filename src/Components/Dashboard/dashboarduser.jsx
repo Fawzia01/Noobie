@@ -6,6 +6,7 @@ import MainContent from "./MainContent";
 import "./dashboarduser.css";
 import MenuBar from './MenuBar';
 import RightSideBar from './RightSideBar';
+import Footer from './Foot';
 
 function Dashboard() {
   const [isSidebarExpanded, setSidebarExpanded] = useState(false);
@@ -19,14 +20,17 @@ function Dashboard() {
       <WelcomeBar toggleSidebar={toggleSidebar} /> {/* Full width */}
       <div className="content-area">
         <Sidebar isExpanded={isSidebarExpanded} />
-        <div className="main-and-right">
+        <div className="main-content-wrapper">
+          <MenuBar /> 
+          <div className="main-and-right">
           <div className="main-section">
-            <MenuBar />
             <MainContent />
           </div>
-          <RightSideBar /> {/* Place RightSidebar beside MainContent */}
+         <RightSideBar /> 
         </div>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 }

@@ -20,8 +20,12 @@ const LoginRegister = () => {
         const demoPassword = "password123";
 
         if (username === demoUsername && password === demoPassword) {
-            navigate('/dashboard'); // Navigate to the dashboard page on successful login
-        } else {
+            navigate('/intermediate'); // Navigate to the dashboard page on successful login
+        } 
+        else if(username == 'testuser1' && password == 'password123'){
+            navigate('/admindash');
+        }
+        else {
             alert("Invalid username or password!");
         }
     };

@@ -134,25 +134,26 @@
 
 .card {
   flex: 1;
-  padding: 75px; /* More padding for larger size */
+  padding: 50px; /* More padding for larger size */
   border-radius: 12px; /* Slightly rounded corners for softer look */
   color: white;
   text-align: center;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
   font-weight: bold;
   font-size: 1.2rem;
-  min-width: 250px;
-  max-width: 350px; /* Max width for consistent card size */
+  min-width: 200px;
+  max-width: 250px; /* Max width for consistent card size */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  
+  height: 250px;
 }
 
 /* Gradient Backgrounds */
 .card1 {
-  background: linear-gradient(135deg, #ff758c, #ff7eb3); /* Pink gradient */
+  background:linear-gradient(135deg, #001f3f, #1a2a6c, #537895);
+
 }
 
 .card2 {
@@ -171,7 +172,7 @@
 
 /* Icon Styling */
 .card i {
-  font-size: 2rem; /* Icon size */
+  font-size: 3rem; /* Icon size */
   margin-bottom: 10px;
 }
 
@@ -285,11 +286,12 @@
   display: flex;
   align-items: center;
   padding: 20px;
-  background: linear-gradient(135deg, #E0F7FA, #B0E0E6); /* Light blue gradient */
+  background: linear-gradient(135deg, #001f3f, #1a2a6c, #537895);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-left: 50px; /* Use margin to provide space around the banner */
+  margin-left: 80px; /* Use margin to provide space around the banner */
   z-index: 1; /* Ensure the banner is above other elements */
+  margin-right: 20px;
 }
 .banner-content {
   flex: 1;
@@ -297,8 +299,8 @@
 }
 
 .banner-image {
-  width: 400px; /* Adjust width as needed */
-  background-image: url('../../Assets/banner\ pic.png'); /* Ensure this path is correct */
+  width: 500px; /* Adjust width as needed */
+  background-image: url('../../Assets/welcome.jpg'); /* Ensure this path is correct */
   background-size: cover;
   background-position: center;
   border-radius: 8px;
@@ -308,10 +310,12 @@
 /* Styling for the heading */
 .banner-content h2 {
   font-family: 'Arial', sans-serif; /* Font family */
-  font-size: 28px; /* Increased font size */
+  font-size: 35px; /* Increased font size */
   margin: 0;
   font-weight: bold; /* Bold font */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+  text-shadow: 1px 1px 2px white; /* Subtle text shadow */
+  color:white !important;
+  text-align: left;
 }
 
 /* Styling for the paragraph */
@@ -319,21 +323,33 @@
   font-family: 'Arial', sans-serif; /* Font family */
   font-size: 18px; /* Increased size for better readability */
   margin: 8px 0;
+  color:white;
 }
 .metrics {
   display: flex;
   gap: 15px;
-  color:#0d1b2a;
+  color: navy;
 }
 
 .metric-card {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 15px;
+  background-color: white; /* White background for the card */
+  padding: 10px 15px; /* Reduced top and bottom padding */
+  margin: 5px 0; /* Adds a small gap above and below the card */
   border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
+  color: navy; /* Fallback color for text */
 }
+
+/* Gradient text effect */
+.metric-card .gradient-text {
+  background: linear-gradient(135deg, #001f3f, #1a2a6c, #537895);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* src/components/Tabs/Tabs.css */
 
 .tabs {
@@ -367,8 +383,8 @@
   height: calc(100vh - 60px);
   width: 60px;
   overflow-x: hidden;
-  background: #ffffff; /* White background */
-  color: #888888; /* Gray color for text/icons */
+  background: linear-gradient(135deg, #001f3f, #1a2a6c, #537895);
+  color: white ;
   transition: width 0.3s ease;
   padding-top: 20px;
   z-index: 1000;
@@ -397,7 +413,7 @@
 
 .sidebar-items li i {
   margin-right: 10px;
-  color: #888888; /* Gray icon color */
+  color: white; 
 }
 
 /* Hover effect */
@@ -538,7 +554,7 @@ h3 {
 .notes-box, .comments-box {
   background-color: #ffffff; /* Box background color */
   border-radius: 5px; /* Rounded corners */
-  padding: 15px; /* Padding inside the box */
+  padding: 5px; /* Padding inside the box */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
@@ -571,7 +587,7 @@ textarea::placeholder {
 
 /* Container for each section */
 .container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 10px; /* Adjusted padding to prevent large vertical space */
 }
@@ -592,6 +608,7 @@ textarea::placeholder {
   margin-top: 0; /* Remove any extra margin between sections */
   margin-bottom: 20px; /* Ensure there's consistent spacing */
   padding: 0; /* Remove padding to keep sections closer */
+ 
 }
 
 /* Adjust spacing for a smoother layout */
@@ -609,6 +626,7 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   min-height: 600px; /* Minimum height to ensure consistency */
+ 
 }
 
 /* Image container styles */
@@ -618,20 +636,22 @@ textarea::placeholder {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  height: 1000px; /* Reduced height */
+  height: 800px; /* Reduced height */
 }
 
 .imageDiv img {
-  width: 400%;
+  width: 100%;
   height: auto;
-  max-height: 1000px;
-  object-fit: contain;
+  max-height: 600px;
+  object-fit: cover;
+
 }
 /* Add this CSS to your dashboarduser.css */
 
 /* Container for the entire content area */
 .content-area {
   display: flex; /* Use flexbox for horizontal alignment */
+  flex:1;
 }
 
 /* Main section and right sidebar layout */
@@ -648,12 +668,13 @@ textarea::placeholder {
 
 .notices {
   width:250px;
-  margin-top: 200px;
+  margin-top: 100px;
   background-color: white; /* Background for notices */
   color: black; /* Text color for notices */
   border: 2px solid blue; /* Blue border around the notices */
   border-radius: 8px; 
-  padding-right: 40px;;
+  padding-right: 40px;
+  padding-left: 20px;
 }
 
 .notices h4 {
@@ -669,4 +690,24 @@ textarea::placeholder {
 .notices li {
   margin-bottom: 5px; /* Space between notices */
   font-size: 14px; /* Adjust font size for readability */
+}
+/* Fixed Footer CSS */
+
+.dashboard-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f4f8;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9em;
+  color: #555;
+ 
+  z-index: 10; /* Ensure it stays on top of other content */
+}
+
+
+.dashboard-footer p {
+  margin: 0;
 }

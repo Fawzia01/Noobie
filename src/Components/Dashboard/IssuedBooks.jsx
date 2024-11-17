@@ -1,9 +1,9 @@
 // Dashboard/IssuedBooks.js
 import React from "react";
 import "./dashboarduser.css";
-import img1 from '../../Assets/Book1.jpg'; // Correct image imports
-import img2 from '../../Assets/Book2.jpeg';
-import img3 from '../../Assets/Book3.jpg';
+import img1 from '../../Assets/Book4.jpeg'; // Correct image imports
+import img2 from '../../Assets/book5.png';
+import img3 from '../../Assets/book6.jpeg';
 import  { useState } from 'react';
 import monthlyreadimg from '../../Assets/monthlychallenge.jpg'
 import yearlyreadimg from '../../Assets/Reading-Challenge.png'
@@ -12,7 +12,7 @@ import yearlyreadimg from '../../Assets/Reading-Challenge.png'
 const Data = [
   {
     id: 1,
-    bookName: 'Cosmos',
+    bookName: 'Other London',
     imgSrc: img1,
     published: 'January 1, 1980',
     author: 'Carl Sagan',
@@ -21,7 +21,7 @@ const Data = [
   },
   {
     id: 2,
-    bookName: 'Data Structure and Algorithm',
+    bookName: 'Science Fiction',
     imgSrc: img2,
     published: '2023',
     author: 'Dilip Kumar Sultania',
@@ -30,7 +30,7 @@ const Data = [
   },
   {
     id: 3,
-    bookName: 'Mechanical Engineering Education HandBook',
+    bookName: 'Enceladus',
     imgSrc: img3,
     published: 'May 29, 2020',
     author: 'Charles E. Baukal, Jr., PhD (Editor)',
@@ -54,7 +54,7 @@ const Main = () => {
   return (
     <section className='main container section'>
       <div className='secHeader'>
-        <h3 className="title">Issued Books</h3>
+        <h3 className="title">  Issued Books</h3>
         <button className="seeAllBtn">See All</button>
       </div>
 
@@ -76,7 +76,7 @@ const Main = () => {
       </div>
 
 <div className='secHeader' style={{ marginTop: '5px' }}>
-<h3 className="title">Participating Events</h3>
+<h3 className="title"> Participating Events</h3>
 </div>
 
 <div className='secContent grid'>

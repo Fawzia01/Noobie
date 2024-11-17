@@ -1,25 +1,30 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './app.css';
-import Navbar from './Components/Navbar/Navbar';
-import Home from './Components/Home/home';
-import Main from './Components/Mains/Main';
-import Footer from './Components/Footer/footer';
+import Navbar from './Components/Homepage/Navbar/Navbar';
+import Home from './Components/Homepage/Home/home';
+import Main from './Components/Homepage/Mains/Main';
+import Footer from './Components/Homepage/Footerr/footer';
 import LoginRegister from './Components/loginregister/LoginRegister';
-import About from './Components/About/about';
-import Contact from './Components/Contact/contact'; 
+import About from './Components/Homepage/About/about';
+import Contact from './Components/Homepage/Contact/contact';
 import Dashboard from './Components/Dashboard/dashboarduser';
+import IntermediatePage from './Components/IntermediatePage/intermediatePage';
+import AdminDash from './Components/AdminDash/admindash';
+import Ebooks from './Components/Dashboard/Functions/Ebook/ebooks';
+import AudiobookPlayer from './Components/Dashboard/Functions/Ebook/audio';
+import Payment from './Components/Dashboard/Functions/Payment/payment';
 
 const App = () => {
   const location = useLocation();
 
-  // Check if the current path is not '/login' or '/dashboard' to display the navbar
-  const showNavbar = location.pathname !== "/login" && location.pathname !== "/dashboard";
+  // Define paths where Navbar should be hidden
+  const navbarHiddenPaths = ['/login', '/intermediate', '/dashboarduser', '/admindash', '/ebooks', '/audio','/payment'];
+  const showNavbar = !navbarHiddenPaths.includes(location.pathname);
 
   return (
     <div>
-      {showNavbar && <Navbar />} {/* Conditionally render Navbar */}
+      {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={
           <>
@@ -29,19 +34,23 @@ const App = () => {
           </>
         } />
         <Route path="/login" element={<LoginRegister />} />
+        <Route path="/intermediate" element={<IntermediatePage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} /> 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/dashboarduser" element={<Dashboard />} />
+        <Route path="/ebooks" element={<Ebooks />} />
+        <Route path="/audio" element={<AudiobookPlayer />} />
+        <Route path="/admindash" element={<AdminDash />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </div>
   );
 };
 
-// Main App component wrapped in Router
 const AppWrapper = () => {
   return (
     <Router>
-      <App /> {/* App is now directly inside the Router */}
+      <App />
     </Router>
   );
 };

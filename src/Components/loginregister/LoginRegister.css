@@ -102,7 +102,11 @@ form .input-box{
     right:20px;
     top:50%;
     translate: 0-50%;
-    font-size:16px;
+    font-size:20px;
+    
+}
+.input-box .icon + .icon {
+    margin-right: 30px; /* Space between the lock and eye icons */
 }
 
 form .remember-forgot{

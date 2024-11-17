@@ -1,13 +1,13 @@
 // Dashboard/IssuedBooks.js
 import React from "react";
 import "./dashboarduser.css";
-import img1 from '../../Assets/Book1.jpg'; // Correct image imports
-import img2 from '../../Assets/Book2.jpeg';
+import img1 from '../../Assets/Book4.jpeg'; // Correct image imports
+import img2 from '../../Assets/Book7.jpeg';
 
 const Data = [
   {
     id: 1,
-    bookName: 'Cosmos',
+    bookName: 'Other London',
     imgSrc: img1,
     published: 'January 1, 1980',
     author: 'Carl Sagan',
@@ -15,7 +15,7 @@ const Data = [
   },
   {
     id: 2,
-    bookName: 'Data Structure and Algorithm',
+    bookName: 'Artificial Intelligence',
     imgSrc: img2,
     published: '2023',
     author: 'Dilip Kumar Sultania',

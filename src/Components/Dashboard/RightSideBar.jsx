@@ -45,11 +45,16 @@ const RightSidebar = () => {
         <textarea placeholder="Write your notes here..." rows="5"></textarea>
       </div>
 
-      {/* Comments Box */}
+      {/* 
       <div className="comments box">
-        <h4>Comments & Suggestions</h4>
-        <textarea placeholder="Leave your comments or suggestions here..." rows="5"></textarea>
+        <h4>Comments </h4>
+        <textarea placeholder="Leave your comments about us here..." rows="5"></textarea>
       </div>
+
+      <div className="comments box">
+        <h4>Suggestions</h4>
+        <textarea placeholder="Give ur suggestions about what books to add next..." rows="5"></textarea>
+      </div>*/}
 
       {/* Notices Box */}
       <div className="notices box">
