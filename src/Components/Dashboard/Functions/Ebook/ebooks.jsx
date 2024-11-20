@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+
+import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import './ebooks.css';
 import TopNavbar from '../Ebook/etopnav';  // Import TopNavbar component
 import Sidebar from '../../Sidebar';     // Import Sidebar component
 import img1 from '../../../../Assets/chap1pic.jpeg';
-import img2 from '../../../../Assets/chap2.jpeg';
-import img3 from '../../../../Assets/chap3.jpeg';
+import img2 from '../../../../Assets/chap3.jpeg';
+import img3 from '../../../../Assets/chap2.jpeg';
 import img4 from '../../../../Assets/chap4.jpeg';
 import img5 from '../../../../Assets/chap5.jpg';
 import img6 from '../../../../Assets/chap6.jpeg';

@@ -58,6 +58,10 @@
 .location, .map {
   flex: 1; /* Allow both sections to take equal space */
   margin-right: 20px; /* Add spacing between sections */
+  color:#ffffff !important;
+}
+.location p{
+  color:#ffffff !important;
 }
 
 .map {
@@ -65,5 +69,5 @@
 }
 .footer-content h2,
 .footer-content h3 {
-  color: var(--whiteColor); /* White color for all headings within the footer content */
+  color: var(--whiteColor) !important; /* White color for all headings within the footer content */
 }

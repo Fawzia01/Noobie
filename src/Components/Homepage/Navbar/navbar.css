@@ -148,15 +148,7 @@
   color: var(--PrimaryColor);
 }
 
-/* Sidebar close button */
-.closeNavbar {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  cursor: pointer;
-  color: var(--PrimaryColor);
-  font-size: 1.8rem;
-}
+
 
 /* Search form styles */
 .searchForm {

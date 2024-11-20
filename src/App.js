@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, useMatch } from 'react-router-dom';
 import './app.css';
 import Navbar from './Components/Homepage/Navbar/Navbar';
 import Home from './Components/Homepage/Home/home';
@@ -20,9 +20,24 @@ import BookDetails from './Components/Dashboard/Functions/Book/bookdetail';
 const App = () => {
   const location = useLocation();
 
+  // Use useMatch to dynamically match routes like /bookdetail/:id
+  const matchBookDetail = useMatch('/bookdetail/:id');
+
   // Define paths where Navbar should be hidden
-  const navbarHiddenPaths = ['/login', '/intermediate', '/dashboarduser', '/admindash', '/ebooks', '/audio','/payment','/book','/bookdetail'];
-  const showNavbar = !navbarHiddenPaths.includes(location.pathname);
+  const navbarHiddenPaths = [
+    '/login', 
+    '/intermediate', 
+    '/dashboarduser', 
+    '/admindash', 
+    '/ebooks', 
+    '/audio', 
+    '/payment', 
+    '/book', 
+    '/bookdetail/:id'
+  ];
+
+  // If the current path matches /bookdetail/:id, we want to hide the navbar
+  const showNavbar = !navbarHiddenPaths.some(path => location.pathname.startsWith(path));
 
   return (
     <div>
@@ -45,7 +60,7 @@ const App = () => {
         <Route path="/admindash" element={<AdminDash />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/book" element={<Book />} />
-        <Route path="/bookdetail" element={<BookDetails />} />
+        <Route path="/bookdetail/:id" element={<BookDetails />} />
       </Routes>
     </div>
   );

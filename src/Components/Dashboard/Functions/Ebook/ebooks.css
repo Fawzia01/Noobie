@@ -611,3 +611,7 @@ body {
   font-weight: bold;
   color: #333;
 }
+.highlight {
+  background-color: #ffff99;
+  transition: background-color 0.5s ease;
+}
