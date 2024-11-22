@@ -1,6 +1,6 @@
 import React from "react";
-import AdminNav from "./AdminNav";
-import AdminSidebar from "./AdminSidebar";
+import AdminNav from "../AdminDash/adminheader/AdminNav";
+import AdminSidebar from "../AdminDash/adminheader/AdminSidebar";
 import AdminWelcome from "./AdminWelcome";
 import { Card, CardContent, Typography } from "@mui/material";
 import { Doughnut, Bar, Line } from "react-chartjs-2";
@@ -21,7 +21,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import './admindash.css';
+import '../AdminDash/adminheader/admindash.css';
 
 // Register Chart.js components
 ChartJS.register(

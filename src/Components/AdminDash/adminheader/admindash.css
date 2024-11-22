@@ -186,7 +186,7 @@ h2 {
 .admin-welcome-image {
   width: 400px;
   height: 150px;
-  background-image: url('../../Assets/admin.jpg'); /* Add the actual image path */
+  background-image: url('../../../Assets/admin.jpg'); /* Add the actual image path */
   background-size: cover;
   background-position: center;
   border-radius: 8px;

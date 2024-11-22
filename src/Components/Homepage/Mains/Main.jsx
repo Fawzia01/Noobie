@@ -44,22 +44,7 @@ const Main = () => {
     bookRefs.current = bookRefs.current.slice(0, Data.length); // Ensure the array has the right size
   }, [Data.length]);
 
-  // Handle search and book selection
-  useEffect(() => {
-    const matchingBook = Data.find(book =>
-      book.bookName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    if (matchingBook) {
-      setHighlightedBookId(matchingBook.id);
-      const bookRef = bookRefs.current[matchingBook.id - 1]; // Adjust index
-      if (bookRef) {
-        bookRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    } else {
-      setHighlightedBookId(null);
-    }
-  }, [searchQuery]);
+ 
 
   // Handle click on a book to highlight it
   const handleBookClick = (id) => {

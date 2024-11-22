@@ -16,6 +16,8 @@ import AudiobookPlayer from './Components/Dashboard/Functions/Ebook/audio';
 import Payment from './Components/Dashboard/Functions/Payment/payment';
 import Book from './Components/Dashboard/Functions/Book/book';
 import BookDetails from './Components/Dashboard/Functions/Book/bookdetail';
+import Member from './Components/AdminDash/Function/Member/member';
+import AdminBook from './Components/AdminDash/Function/AdminBook/adminbook';
 
 const App = () => {
   const location = useLocation();
@@ -33,7 +35,10 @@ const App = () => {
     '/audio', 
     '/payment', 
     '/book', 
-    '/bookdetail/:id'
+    '/bookdetail/:id',
+    '/member',
+    '/adminbook'
+
   ];
 
   // If the current path matches /bookdetail/:id, we want to hide the navbar
@@ -61,6 +66,8 @@ const App = () => {
         <Route path="/payment" element={<Payment />} />
         <Route path="/book" element={<Book />} />
         <Route path="/bookdetail/:id" element={<BookDetails />} />
+        <Route path="/member" element={<Member />}/>
+        <Route path="/adminbook" element={<AdminBook />}/>
       </Routes>
     </div>
   );

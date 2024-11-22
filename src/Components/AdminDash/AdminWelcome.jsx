@@ -1,5 +1,5 @@
 import React from 'react';
-import './admindash.css';
+import '../AdminDash/adminheader/admindash.css';
 
 function AdminWelcome() {
   return (
