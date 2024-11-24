@@ -6,7 +6,8 @@
   height: 100vh; /* Full viewport height */
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   color: #333;
-  overflow: hidden; /* Prevent scrolling on the dashboard */
+  overflow-x: hidden; /* Prevent scrolling on the dashboard */
+  overflow-y: auto;
 }
 
 .top-navbar {
@@ -93,13 +94,14 @@
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
-.main-content {
+.main-content-wrapper {
   flex: 1; 
-  margin-left: 60px; 
+  margin-left: -10px; 
   padding: 20px;
   overflow-y: auto; 
   background-color: #f5f7fa;
   margin-bottom: 0px;
+  margin-top: 10px;
 }
 
 
@@ -127,14 +129,15 @@
 .card-section {
   display: flex;
   gap: 20px; /* Increased spacing between cards */
-  margin: 20px 0;
+  margin: 10px 0;
   justify-content: space-around; /* Center cards horizontally */
+  margin-left: 10px;
 
 }
 
 .card {
   flex: 1;
-  padding: 50px; /* More padding for larger size */
+  padding: 60px; /* More padding for larger size */
   border-radius: 12px; /* Slightly rounded corners for softer look */
   color: white;
   text-align: center;
@@ -375,52 +378,7 @@
 }
 
 
-/* Sidebar Styling */
-.sidebar {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  height: calc(100vh - 60px);
-  width: 60px;
-  overflow-x: hidden;
-  background: linear-gradient(135deg, #001f3f, #1a2a6c, #537895);
-  color: white ;
-  transition: width 0.3s ease;
-  padding-top: 20px;
-  z-index: 1000;
-}
 
-/* Sidebar Expanded */
-.sidebar.expanded {
-  width: 200px; /* Expanded width */
-}
-
-.sidebar-items {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Sidebar items */
-.sidebar-items li {
-  padding: 15px 10px;
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #888888; /* Gray text color */
-}
-
-.sidebar-items li i {
-  margin-right: 10px;
-  color: white; 
-}
-
-/* Hover effect */
-.sidebar-items li:hover {
-  background-color: #f0f0f0; /* Light gray background on hover */
-  transition: background-color 0.3s;
-}
 
 .right-sidebar {
   width: 250px; /* Reduced width for a more compact look */
@@ -614,6 +572,7 @@ textarea::placeholder {
 /* Adjust spacing for a smoother layout */
 .main .secContent + .secHeader {
   margin-top: -10px; /* Slight negative margin to bring sections closer */
+  margin-left: -20px;
 }
 
 /* Single Book/Challenge Card Styles */
@@ -663,7 +622,7 @@ textarea::placeholder {
 /* Adjust main-section if needed */
 .main-section {
   flex: 1; /* Take available space */
-  padding: 20px; /* Space inside the main section */
+  padding: -10px; /* Space inside the main section */
 }
 
 .notices {

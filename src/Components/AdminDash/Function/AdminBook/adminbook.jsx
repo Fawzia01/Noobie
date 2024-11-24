@@ -147,7 +147,7 @@ useEffect(() => {
         </div>
       )}
 
-      <div className={`main-content ${isSidebarExpanded ? "shrink" : ""}`}>
+      <div className={`admain-content ${isSidebarExpanded ? "shrink" : ""}`}>
         <div className="adbook-welcome-bar">
           <div className="adbook-welcome-text">
             <h1>Book Management</h1>

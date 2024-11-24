@@ -16,6 +16,7 @@ import img9 from '../../../../Assets/chap9.jpeg';
 import img10 from '../../../../Assets/chap10.jpg';
 import img11 from '../../../../Assets/chap11.jpg';
 import img12 from '../../../../Assets/chap12.jpeg';
+import Header from '../../../Header/header';
 
 const books = [
   // StoryBooks Section
@@ -75,11 +76,7 @@ export default function EbookPage() {
   return (
     <div className="ebook-page-container">
       {/* Top Navbar */}
-      <TopNavbar />
-
-      {/* Sidebar */}
-      <Sidebar />
-
+      <Header />
       <div className="ebanner">
         <div className="ebanner-content">
           <div>
@@ -95,7 +92,7 @@ export default function EbookPage() {
         {Object.keys(groupedBooks).map((category) => (
           <div className="book-section" key={category}>
             <h3>{category}</h3>
-            <table className="book-table">
+            <table className="ebook-table">
               <thead>
                 <tr>
                   <th>ID</th>

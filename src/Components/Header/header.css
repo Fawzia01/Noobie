@@ -129,4 +129,39 @@
     background: linear-gradient(135deg, #a18cd1, #fbc2eb);
     color: white;
   }
+ 
+  .sidebar-items {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-items li {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .sidebar-items li:hover {
+    background-color: #ddd;
+  }
+  
+  /* Submenu styling */
+  .submenu {
+    list-style-type: none;
+    padding-left: 20px;
+    margin-top: 5px;
+  }
+  
+  .submenu li {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .submenu li:hover {
+    background-color: #eaeaea;
+  }
   

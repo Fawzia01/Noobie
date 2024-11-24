@@ -261,8 +261,8 @@ const BookDetails = () => {
 
       <div className="details-content">
         {/* Book cover */}
-        <div className="book-cover">
-          <img src={book.cover} alt={book.title} className="book-image" />
+        <div className="bookdetail-cover">
+          <img src={book.cover} alt={book.title} className="bookdetail-image" />
         </div>
 
         {/* Book Info */}

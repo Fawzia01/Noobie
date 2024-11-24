@@ -1,7 +1,7 @@
 // Dashboard/Dashboard.js
 import React, { useState } from "react";
 import WelcomeBar from "./WelcomeBar";
-import Sidebar from "./Sidebar";
+import Header from "../Header/header";
 import MainContent from "./MainContent";
 import "./dashboarduser.css";
 import MenuBar from './MenuBar';
@@ -17,18 +17,15 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <WelcomeBar toggleSidebar={toggleSidebar} /> {/* Full width */}
-      <div className="content-area">
-        <Sidebar isExpanded={isSidebarExpanded} />
+      <Header/>
         <div className="main-content-wrapper">
           <MenuBar /> 
-          <div className="main-and-right">
+        
           <div className="main-section">
             <MainContent />
           </div>
-         <RightSideBar /> 
-        </div>
-      </div>
+        
+    
     </div>
     <Footer/>
     </div>

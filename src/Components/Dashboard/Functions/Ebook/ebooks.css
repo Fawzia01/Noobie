@@ -327,31 +327,31 @@ body {
 
 
 /* Book Table */
-.book-table {
+.ebook-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.book-table th, .book-table td {
+.ebook-table th, .book-table td {
   padding: 10px;
   text-align: left;
 }
 
-.book-table th {
+.ebook-table th {
   background-color: #f2f2f2;
 }
 
-.book-table tr:nth-child(even) {
+.ebook-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.book-table td img {
+.ebook-table td img {
   width: 100px;  /* Adjust the size of the cover image */
   height: 150px;
 }
 
-.book-table td a {
+.ebook-table td a {
   color: #007bff;
   text-decoration: none;
 }
@@ -360,7 +360,7 @@ body {
   text-decoration: underline;
 }
 
-.book-table td button {
+.ebook-table td button {
   background-color: #28a745;
   color: white;
   border: none;
@@ -368,7 +368,7 @@ body {
   cursor: pointer;
 }
 
-.book-table td button:hover {
+.ebook-table td button:hover {
   background-color: #218838;
 }
 .ebanner {
@@ -377,13 +377,12 @@ body {
   background-position: center; 
   padding: 20px;
   text-align: left; /* Align text to the left */
-  min-height: 250px;
+  min-height: 200px;
   display: flex;
   justify-content: space-between; /* Space out the image and text */
   align-items: center;
   margin-left: 80px;
   position: relative;
- 
 }
 
 .ebanner-content {
@@ -421,15 +420,16 @@ body {
 }
 
 .ebanner-image {
-  width: 450px; /* Adjust width as needed */
+  width: 30%; /* Adjust width as needed */
   background-image: url(../../../../Assets/audiobook.jpg); /* Ensure this path is correct */
-  background-size: cover;
-  background-position: center;
+ background-size: cover;
+background-position: center;
   border-radius: 8px;
-  min-height: 200px; /* Add height if needed */
+  min-height: 250px; /* Add height if needed */
   margin-left: 100px;
   margin-right: 0px;
-  margin-top: 0px;
+  margin-top: -20px;
+  object-fit: cover;
 }
 /* General Styles for TopNavbar */
 .top-navbar {

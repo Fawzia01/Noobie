@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation, useMatch } from 'react-router-dom';
 import './app.css';
 import Navbar from './Components/Homepage/Navbar/Navbar';
@@ -14,13 +14,22 @@ import AdminDash from './Components/AdminDash/admindash';
 import Ebooks from './Components/Dashboard/Functions/Ebook/ebooks';
 import AudiobookPlayer from './Components/Dashboard/Functions/Ebook/audio';
 import Payment from './Components/Dashboard/Functions/Payment/payment';
-import Book from './Components/Dashboard/Functions/Book/book';
 import BookDetails from './Components/Dashboard/Functions/Book/bookdetail';
 import Member from './Components/AdminDash/Function/Member/member';
 import AdminBook from './Components/AdminDash/Function/AdminBook/adminbook';
+import StoryBooks from './Components/Dashboard/Functions/Book/storybooks';
+import CSEBooks from './Components/Dashboard/Functions/Book/csebooks';
+import EEBooks from './Components/Dashboard/Functions/Book/eebooks'; 
+import MEBooks from './Components/Dashboard/Functions/Book/mebooks';
 
 const App = () => {
   const location = useLocation();
+  const [members, setMembers] = useState([]); // Initial state is an empty array
+
+  // Function to add a new member
+  const addMember = (newMember) => {
+    setMembers((prevMembers) => [...prevMembers, newMember]);
+  };
 
   // Use useMatch to dynamically match routes like /bookdetail/:id
   const matchBookDetail = useMatch('/bookdetail/:id');
@@ -34,15 +43,18 @@ const App = () => {
     '/ebooks', 
     '/audio', 
     '/payment', 
-    '/book', 
     '/bookdetail/:id',
     '/member',
-    '/adminbook'
+    '/adminbook',
+    '/storybooks',
+    '/mebooks',
+    '/csebooks',
+    '/eebooks'
 
   ];
-
+   
   // If the current path matches /bookdetail/:id, we want to hide the navbar
-  const showNavbar = !navbarHiddenPaths.some(path => location.pathname.startsWith(path));
+  const showNavbar = !navbarHiddenPaths.some(path => location.pathname.startsWith(path) || location.pathname.includes('/bookdetail/'));
 
   return (
     <div>
@@ -55,7 +67,7 @@ const App = () => {
             <Footer />
           </>
         } />
-        <Route path="/login" element={<LoginRegister />} />
+        <Route path="/login" element={<LoginRegister addMember={addMember}  />} />
         <Route path="/intermediate" element={<IntermediatePage />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -64,10 +76,13 @@ const App = () => {
         <Route path="/audio" element={<AudiobookPlayer />} />
         <Route path="/admindash" element={<AdminDash />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/book" element={<Book />} />
         <Route path="/bookdetail/:id" element={<BookDetails />} />
-        <Route path="/member" element={<Member />}/>
+        <Route path="/member" element={<Member members={members}/>}/>
         <Route path="/adminbook" element={<AdminBook />}/>
+        <Route path="/storybooks" element={<StoryBooks />}/>
+        <Route path="/csebooks" element={<CSEBooks />}/>
+        <Route path="/eebooks" element={<EEBooks />}/>
+        <Route path="/mebooks" element={<MEBooks />}/>
       </Routes>
     </div>
   );

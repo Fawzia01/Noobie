@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Avatar, IconButton, InputAdornment, Tooltip } from "@mui/material";
 import { Notifications, Settings, Message, Search } from '@mui/icons-material';
-import './member.css'; // Make sure this file exists for styling
+import './member.css'; // Ensure this file exists for styling
 import AdminSidebar from "../../adminheader/AdminSidebar";
 import { GiBookCover } from 'react-icons/gi';
 import { Edit, Delete } from '@mui/icons-material';
+import axios from "axios";
+import dummyImg from '../../../../Assets/dummy.jpeg';
 
 // MemNavBar Component
 function MemNavBar({ members, searchTerm, setSearchTerm, setFilteredMembers }) {
-  // Filter members based on the search term
   useEffect(() => {
     const filtered = members.filter((member) => {
       return (
@@ -22,21 +23,19 @@ function MemNavBar({ members, searchTerm, setSearchTerm, setFilteredMembers }) {
 
   return (
     <nav className="mem-navbar">
-      {/* Left Section - Empty or Other Content */}
       <div className="memnavbar-left">
         <IconButton className="memnavbar-icon">
           <GiBookCover size={40} color="white" />
         </IconButton>
       </div>
 
-      {/* Centered Search Bar */}
       <div className="memnavbar-center">
         <TextField
-          variant="outlined"
+          variant="outlined" // Added "outlined" variant
           placeholder="Search Members..."
           size="small"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Handle search term change
+          onChange={(e) => setSearchTerm(e.target.value)}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -47,9 +46,9 @@ function MemNavBar({ members, searchTerm, setSearchTerm, setFilteredMembers }) {
           className="memnavbar-search"
           fullWidth
         />
-      </div>
+        </div>
 
-      {/* Right Section - Icons */}
+
       <div className="memnavbar-right">
         <IconButton className="memicon-button">
           <Message />
@@ -60,53 +59,112 @@ function MemNavBar({ members, searchTerm, setSearchTerm, setFilteredMembers }) {
         <IconButton className="memicon-button">
           <Settings />
         </IconButton>
-        <Avatar alt="Profile" src="/path/to/profile-picture.jpg" className="profile-avatar" />
+        <Avatar alt="Profile" src={dummyImg} className="profile-avatar" />
       </div>
     </nav>
   );
 }
 
-// Main Member Component
 const Member = () => {
   const [members, setMembers] = useState([]);
-  const [newMember, setNewMember] = useState({ studentId: "", name: "", email: "", department: "", batch: "" });
-  const [searchTerm, setSearchTerm] = useState(""); // Search term state
-  const [filteredMembers, setFilteredMembers] = useState([]); // Filtered members state
+  const [filteredMembers, setFilteredMembers] = useState([]);
+  const [newMember, setNewMember] = useState({
+    studentId: "",
+    name: "",
+    department: "",
+    password: "",
+    address: "",
+    email: "",
+    batch: "",
+    interest: "",
+  });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [memberToDelete, setMemberToDelete] = useState(null);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);  // **Initialization of state**
   const [memberToEdit, setMemberToEdit] = useState(null);
+  const [memberToDelete, setMemberToDelete] = useState(null);
 
-  // Example data fetching
   useEffect(() => {
-    const mockMembers = [
-      { id: 1, studentId: "1904024", name: "Alice Johnson", email: "alice@example.com", department: "CSE", batch: "2019" },
-      { id: 2, studentId: "2302018", name: "Bob Smith", email: "bob@example.com", department: "EE", batch: "2023" },
-      { id: 3, studentId: "2104035", name: "Catherine Bell", email: "catherine@example.com", department: "CSE", batch: "2021" },
-    ];
-    setMembers(mockMembers);
-    setFilteredMembers(mockMembers); // Initialize with all members
+    axios
+      .get("http://localhost:8080/api/admin/students")
+      .then((response) => {
+        setMembers(response.data);
+        setFilteredMembers(response.data);
+      })
+      .catch((error) => console.error("Error fetching members:", error));
   }, []);
 
   const handleAddMember = () => {
-    if (Object.values(newMember).some(value => value.trim() === "")) {
+    if (Object.values(newMember).some((value) => value.trim() === "")) {
       alert("All fields must be filled out!");
       return;
     }
-    const nextId = members.length ? members[members.length - 1].id + 1 : 1;
-    const updatedMembers = [...members, { id: nextId, ...newMember }];
-    setMembers(updatedMembers);
-    setFilteredMembers(updatedMembers); // Update filtered members as well
-    setNewMember({ studentId: "", name: "", email: "", department: "", batch: "" });
+
+    axios
+      .post("http://localhost:8080/api/admin/students", newMember)
+      .then((response) => {
+        const updatedMembers = [...members, response.data];
+        setMembers(updatedMembers);
+        setFilteredMembers(updatedMembers);
+        setNewMember({
+          studentId: "",
+          name: "",
+          department: "",
+          password: "",
+          address: "",
+          email: "",
+          batch: "",
+          interest: "",
+        });
+      })
+      .catch((error) => console.error("Error adding member:", error));
+  };
+
+  const handleSaveEdit = () => {
+    axios
+      .put(`http://localhost:8080/api/admin/students/${memberToEdit.id}`, memberToEdit)
+      .then((response) => {
+        const updatedMembers = members.map((member) =>
+          member.id === memberToEdit.id ? response.data : member
+        );
+        setMembers(updatedMembers);
+        setFilteredMembers(updatedMembers);
+        setIsEditDialogOpen(false);
+        setMemberToEdit(null);
+      })
+      .catch((error) => console.error("Error updating member:", error));
+  };
+
+  const handleDeleteMember = () => {
+    axios
+      .delete(`http://localhost:8080/api/admin/students/${memberToDelete}`)
+      .then(() => {
+        const updatedMembers = members.filter((member) => member.id !== memberToDelete);
+        setMembers(updatedMembers);
+        setFilteredMembers(updatedMembers);
+        setIsDeleteDialogOpen(false);
+        setMemberToDelete(null);
+      })
+      .catch((error) => console.error("Error deleting member:", error));
+  };
+
+  const handleEditDialogOpen = (member) => {
+    setMemberToEdit({ ...member });
+    setIsEditDialogOpen(true);
   };
 
   return (
     <div className="admins-dashboard">
       <div className="admins-main-content">
-        {/* Pass MemNavBar with necessary props */}
+        {/* Sidebar and Navbar */}
         <AdminSidebar />
-        <MemNavBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} members={members} setFilteredMembers={setFilteredMembers} />
-
+        <MemNavBar 
+          searchTerm={searchTerm} 
+          setSearchTerm={setSearchTerm} 
+          members={members} 
+          setFilteredMembers={setFilteredMembers} 
+        />
+  
         {/* Welcome Section */}
         <div className="mem-welcome">
           <div className="mem-welcome-content">
@@ -115,110 +173,80 @@ const Member = () => {
           </div>
           <div className="mem-welcome-image"></div>
         </div>
-
+  
         <div className="member-container">
           {/* Search and Add Member Form */}
           <div className="member-form">
-            <TextField
-              label="Student ID"
-              variant="outlined"
-              value={newMember.studentId}
-              onChange={(e) => setNewMember({ ...newMember, studentId: e.target.value })}
-              className="member-input"
-            />
-            <TextField
-              label="Name"
-              variant="outlined"
-              value={newMember.name}
-              onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-              className="member-input"
-            />
-            <TextField
-              label="Email"
-              variant="outlined"
-              value={newMember.email}
-              onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
-              className="member-input"
-            />
-            <TextField
-              label="Department"
-              variant="outlined"
-              value={newMember.department}
-              onChange={(e) => setNewMember({ ...newMember, department: e.target.value })}
-              className="member-input"
-            />
-            <TextField
-              label="Batch"
-              variant="outlined"
-              value={newMember.batch}
-              onChange={(e) => setNewMember({ ...newMember, batch: e.target.value })}
-              className="member-input"
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddMember}
-              className="member-add-button"
-            >
-              Add Member
-            </Button>
-          </div>
 
-          <TableContainer component={Paper} className="member-table-container">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Student ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Department</TableCell>
-                  <TableCell>Batch</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredMembers.map((member) => (
-                  <TableRow key={member.id}>
-                    <TableCell>{member.studentId}</TableCell>
-                    <TableCell>{member.name}</TableCell>
-                    <TableCell>{member.email}</TableCell>
-                    <TableCell>{member.department}</TableCell>
-                    <TableCell>{member.batch}</TableCell>
-                    <TableCell>
-                      {/* Edit Icon */}
-                      <Tooltip title="Edit">
-                        <IconButton
-                          onClick={() => {
-                            setMemberToEdit(member); // Set the selected member to edit
-                            setIsEditDialogOpen(true); // Open the edit dialog
-                          }}
-                          color="primary"
-                        >
-                          <Edit />
-                        </IconButton>
-                      </Tooltip>
-
-                      {/* Delete Icon */}
-                      <Tooltip title="Delete">
-                        <IconButton
-                          onClick={() => {
-                            setMemberToDelete(member.id); // Set ID for deletion
-                            setIsDeleteDialogOpen(true); // Open dialog
-                          }}
-                          color="secondary"
-                        >
-                          <Delete />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+        {["Student ID", "Name", "Department", "Password", "Address", "Email", "Batch", "Interest"].map((field, index) => (
+          <TextField
+            key={index}
+            label={field}
+            variant="outlined"
+            value={newMember[field.toLowerCase().replace(" ", "")]}
+            onChange={(e) =>
+              setNewMember({ ...newMember, [field.toLowerCase().replace(" ", "")]: e.target.value })
+            }
+            className="member-input"
+          />
+        ))}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddMember}
+          className="member-add-button"
+        >
+          Add Member
+        </Button>
       </div>
-
+  
+  
+  
+      {/* Members Table */}
+      <TableContainer component={Paper} className="member-table-container">
+        <Table>
+          <TableHead>
+            <TableRow>
+              {["ID", "Name", "Department", "Address", "Email", "Batch", "Interest", "Action"].map((header) => (
+                <TableCell key={header}>{header}</TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredMembers.map((member) => (
+              <TableRow key={member.id}>
+                <TableCell>{member.studentId}</TableCell>
+                <TableCell>{member.name}</TableCell>
+                <TableCell>{member.department}</TableCell>
+                <TableCell>{member.address}</TableCell>
+                <TableCell>{member.email}</TableCell>
+                <TableCell>{member.batch}</TableCell>
+                <TableCell>{member.interest}</TableCell>
+                <TableCell>
+                  <Tooltip title="Edit">
+                    <IconButton onClick={() => handleEditDialogOpen(member)}>
+                      <Edit />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton
+                      onClick={() => {
+                        setMemberToDelete(member.id);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </div>
+      </div>
+  
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
         <DialogTitle>Confirm Deletion</DialogTitle>
@@ -226,12 +254,14 @@ const Member = () => {
           <Typography>Are you sure you want to delete this member?</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">Cancel</Button>
+          <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
           <Button
             onClick={() => {
-              setMembers(members.filter(member => member.id !== memberToDelete));
-              setFilteredMembers(filteredMembers.filter(member => member.id !== memberToDelete)); // Update filtered members
-              setIsDeleteDialogOpen(false); // Close the dialog
+              setMembers(members.filter((member) => member.id !== memberToDelete));
+              setFilteredMembers(filteredMembers.filter((member) => member.id !== memberToDelete));
+              setIsDeleteDialogOpen(false);
             }}
             color="secondary"
           >
@@ -239,49 +269,28 @@ const Member = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
+  
       {/* Edit Member Dialog */}
       <Dialog open={isEditDialogOpen} onClose={() => setIsEditDialogOpen(false)}>
         <DialogTitle>Edit Member</DialogTitle>
         <DialogContent>
-          <TextField
-            label="Student ID"
-            variant="outlined"
-            value={memberToEdit?.studentId || ""}
-            onChange={(e) => setMemberToEdit({ ...memberToEdit, studentId: e.target.value })}
-            fullWidth
-          />
-          <TextField
-            label="Name"
-            variant="outlined"
-            value={memberToEdit?.name || ""}
-            onChange={(e) => setMemberToEdit({ ...memberToEdit, name: e.target.value })}
-            fullWidth
-          />
-          <TextField
-            label="Email"
-            variant="outlined"
-            value={memberToEdit?.email || ""}
-            onChange={(e) => setMemberToEdit({ ...memberToEdit, email: e.target.value })}
-            fullWidth
-          />
-          <TextField
-            label="Department"
-            variant="outlined"
-            value={memberToEdit?.department || ""}
-            onChange={(e) => setMemberToEdit({ ...memberToEdit, department: e.target.value })}
-            fullWidth
-          />
-          <TextField
-            label="Batch"
-            variant="outlined"
-            value={memberToEdit?.batch || ""}
-            onChange={(e) => setMemberToEdit({ ...memberToEdit, batch: e.target.value })}
-            fullWidth
-          />
+          {["Student ID", "Name", "Email", "Department", "Batch"].map((field, index) => (
+            <TextField
+              key={index}
+              label={field}
+              variant="outlined"
+              value={memberToEdit?.[field.toLowerCase().replace(" ", "")] || ""}
+              onChange={(e) =>
+                setMemberToEdit({ ...memberToEdit, [field.toLowerCase().replace(" ", "")]: e.target.value })
+              }
+              fullWidth
+            />
+          ))}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setIsEditDialogOpen(false)} color="primary">Cancel</Button>
+          <Button onClick={() => setIsEditDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
           <Button
             onClick={() => {
               const updatedMembers = members.map((member) =>
