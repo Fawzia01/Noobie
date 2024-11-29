@@ -108,6 +108,12 @@ useEffect(() => {
     setBooks([...books, { id: (books.length + 1).toString(), ...newBook }]);
     closeAddBookDialog();
   };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewBook({ ...newBook, [name]: value });
+  };
+
+  
 
   const deleteBook = (id) => {
     setBooks(books.filter((book) => book.id !== id));
@@ -187,6 +193,7 @@ useEffect(() => {
                 <td>{book.availableCopies}</td>
                 <td>
                   <button onClick={() => goToDetails(book.id)}>View Details</button>
+                  <button onClick={()=>deleteBook(book.id)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -199,7 +206,60 @@ useEffect(() => {
         <div className="add-book-dialog">
           <div className="dialog-content">
             <h2>Add New Book</h2>
-            {/* Add Book Fields */}
+            <label>
+              Book Cover (URL):
+              <input
+                type="text"
+                name="cover"
+                value={newBook.cover}
+                onChange={handleInputChange}
+                placeholder="Enter book cover URL"
+              />
+            </label>
+            
+            <label>
+              Title:
+              <input
+                type="text"
+                name="title"
+                value={newBook.title}
+                onChange={handleInputChange}
+                placeholder="Enter book title"
+              />
+            </label>
+            
+            <label>
+              Author:
+              <input
+                type="text"
+                name="author"
+                value={newBook.author}
+                onChange={handleInputChange}
+                placeholder="Enter author's name"
+              />
+            </label>
+            
+            <label>
+              Category:
+              <input
+                type="text"
+                name="category"
+                value={newBook.category}
+                onChange={handleInputChange}
+                placeholder="Enter book category"
+              />
+            </label>
+            
+            <label>
+              Available Copies:
+              <input
+                type="number"
+                name="availableCopies"
+                value={newBook.availableCopies}
+                onChange={handleInputChange}
+                min="1"
+              />
+            </label>
             <button onClick={addBook}>Add Book</button>
             <button onClick={closeAddBookDialog}>Cancel</button>
           </div>
