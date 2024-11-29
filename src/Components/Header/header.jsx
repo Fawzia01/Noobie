@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // For navigation
 import dummyImg from "../../Assets/dummy.jpeg";
+import Profile from "../../Components/Profile/profile";
+
 
 import './header.css'; // Combined CSS
 
@@ -9,10 +11,25 @@ const Header = ( {books, onSearch } ) => {
   const [suggestedBooks, setSuggestedBooks] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false); // For showing/hiding filter dropdown
   const [filterType, setFilterType] = useState('title'); // Default filter by title
+  const [isModalOpen, setModalOpen] = useState(false); 
+
+  // State to control the visibility of the settings page modal
+  const [isSettingsPageOpen, setSettingsPageOpen] = useState(false);
 
   const navigate = useNavigate();
+  const handleLogout = () => {
+    // Clear any user-related data (e.g., tokens)
+    localStorage.removeItem('authToken'); // Example: Remove the authentication token
+    localStorage.removeItem('userInfo');  // Example: Remove user info (if applicable)
+     // Redirect to login or home page
+     navigate('/login'); // Adjust the path as per your app's routing
 
-  
+    // Optionally, display a success message (use a toast library or alert)
+    alert('You have been logged out.');
+
+   
+  };
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -33,11 +50,13 @@ const Header = ( {books, onSearch } ) => {
     // Pass the search term and filter type to the parent to update the filtered books
     onSearch(value, filterType);
   };
+
   // Handle filter change
   const handleFilterChange = (type) => {
     setFilterType(type);
     onSearch(searchTerm, type); // Update filter and trigger search
   };
+
   const handleBookClick = ({book,onSelectBook}) => {
     if (book && book.id) {
       onSelectBook(book.id); // Notify parent that a book is selected
@@ -51,6 +70,16 @@ const Header = ( {books, onSearch } ) => {
   
   const toggleSidebar = () => setSidebarExpanded(prev => !prev);
   const toggleCatalogue = () => setCatalogueVisible(prev => !prev);
+
+  // Handle Profile click
+  const handleProfileClick = () => {
+    console.log('Profile clicked!'); // Debug to ensure this runs
+    setModalOpen(true);
+  };
+
+  // Close Profile Modal
+  const closeModal = () => setModalOpen(false); 
+
 
   return (
     <div>
@@ -79,16 +108,29 @@ const Header = ( {books, onSearch } ) => {
               <i className="fas fa-tablet-alt"></i> {isSidebarExpanded && "eBooks"}
             </Link>
           </li>
-          <li><i className="fas fa-user"></i> {isSidebarExpanded && "Profile"}</li>
-          <li><i className="fas fa-cog"></i> {isSidebarExpanded && "Settings"}</li>
           <li>
             <Link to="/payment">
               <i className="fas fa-credit-card"></i> {isSidebarExpanded && "Payment"}
             </Link>
           </li>
-          <li><i className="fas fa-sign-out-alt"></i> {isSidebarExpanded && "Logout"}</li>
-          <li><i className="fas fa-comment-dots"></i> {isSidebarExpanded && "Feedback"}</li>
-          <li><i className="fas fa-tachometer-alt"></i> {isSidebarExpanded && "Dashboard"}</li>
+          <li>
+            <Link to="/feedback">
+            <i className="fas fa-comment-dots"></i> {isSidebarExpanded && "Feedback"}
+            </Link>
+            </li>
+          <li>
+          <Link to="/dashboarduser">
+          <i className="fas fa-tachometer-alt"></i> {isSidebarExpanded && "Dashboard"}
+          </Link>
+          </li>
+          <li>
+          <Link to="/settings">
+          <i className='fas fa-cogs settings-icon'></i>{isSidebarExpanded && "Settings"}
+          </Link>
+          </li>
+          <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
+          <i className="fas fa-sign-out-alt"></i> {isSidebarExpanded && "Logout"}
+        </li>
         </ul>
       </div>
 
@@ -133,14 +175,31 @@ const Header = ( {books, onSearch } ) => {
 
         {/* Navbar Icons and Profile */}
         <div className="nav-icons">
-          <i className="icon fas fa-bell bell-icon"></i>
-          <i className="icon fas fa-comments chat-icon"></i>
-          <div className="profile">
+          <i className="icon fas fa-sign-out-alt logout-icon" onClick={handleLogout}></i>
+          <div className="profile" onClick={handleProfileClick}>
             <img src={dummyImg} alt="Profile" className="profile-pic" />
             <span className="username">Sarah Connor</span>
           </div>
         </div>
       </div>
+
+      {/* Profile Modal */}
+      <Profile
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        student={{
+          profilePicture: dummyImg,
+          name: "Sarah cannor",
+          Roll: "12345",
+          email: "johndoe@mail.com",
+          batch: "2023",
+          department: "CSE",
+          address: "123, Main Street, Cityname",
+          interest: "Machine Learning, Robotics",
+        }}
+      />
+
+     
     </div>
   );
 };

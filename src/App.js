@@ -21,6 +21,9 @@ import StoryBooks from './Components/Dashboard/Functions/Book/storybooks';
 import CSEBooks from './Components/Dashboard/Functions/Book/csebooks';
 import EEBooks from './Components/Dashboard/Functions/Book/eebooks'; 
 import MEBooks from './Components/Dashboard/Functions/Book/mebooks';
+import Profile from './Components/Profile/profile';
+import Feedback from './Components/Dashboard/Functions/Feedback/feedback';
+import SettingsPage from './Components/Dashboard/Functions/Settings/settings';
 
 const App = () => {
   const location = useLocation();
@@ -49,7 +52,10 @@ const App = () => {
     '/storybooks',
     '/mebooks',
     '/csebooks',
-    '/eebooks'
+    '/eebooks',
+    '/profile',
+    '/feedback',
+    '/settings'
 
   ];
    
@@ -83,6 +89,9 @@ const App = () => {
         <Route path="/csebooks" element={<CSEBooks />}/>
         <Route path="/eebooks" element={<EEBooks />}/>
         <Route path="/mebooks" element={<MEBooks />}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/feedback" element={<Feedback/>}/>
+        <Route path="/settings" element={<SettingsPage />}/>
       </Routes>
     </div>
   );

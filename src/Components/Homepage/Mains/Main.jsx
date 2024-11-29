@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './main.css';
 import img1 from '../../../Assets/Book1.jpg';
 import img2 from '../../../Assets/Book2.jpeg';
@@ -29,39 +29,15 @@ const librarySchedule = [
 ];
 
 const Main = () => {
-  const [comment, setComment] = useState('');
-  const [bookSuggestion, setBookSuggestion] = useState('');
-  const [commentsList, setCommentsList] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [highlightedBookId, setHighlightedBookId] = useState(null);
   const [genreFilter, setGenreFilter] = useState('');
-  
-  // Create refs for each book to scroll to them
-  const bookRefs = useRef([]);
-  
-  // Add a ref to each book dynamically
-  useEffect(() => {
-    bookRefs.current = bookRefs.current.slice(0, Data.length); // Ensure the array has the right size
-  }, [Data.length]);
+  const [highlightedBookId, setHighlightedBookId] = useState(null);
 
- 
-
-  // Handle click on a book to highlight it
-  const handleBookClick = (id) => {
-    setHighlightedBookId(id);
-    const bookRef = bookRefs.current.find((ref, index) => index + 1 === id);
-    if (bookRef) {
-      bookRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
-  // Handle comment submission
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    setCommentsList(prevComments => [...prevComments, { comment, bookSuggestion }]);
-    setComment('');
-    setBookSuggestion('');
-  };
+  const notices = [
+    { notice: 'Library will be closed for maintenance on 25th December.', date: 'November 28, 2024' },
+    { notice: 'New collection of books available in the Science Fiction genre.', date: 'November 27, 2024' },
+    { notice: 'All overdue fines must be cleared by the end of the month.', date: 'November 26, 2024' },
+  ];
 
   // Filter books based on search query and genre
   const filteredBooks = Data.filter(book => {
@@ -82,12 +58,11 @@ const Main = () => {
 
         <div className='secContent grid'>
           {filteredBooks.length > 0 ? (
-            filteredBooks.map(({ id, imgSrc, bookName, published, author, genre }, index) => (
+            filteredBooks.map(({ id, imgSrc, bookName, published, author, genre }) => (
               <div
                 key={id}
-                ref={el => bookRefs.current[index] = el} 
                 className={`singleBook ${highlightedBookId === id ? 'highlighted' : ''}`} 
-                onClick={() => handleBookClick(id)} 
+                onClick={() => setHighlightedBookId(id)} 
               >
                 <div className="imageDiv">
                   <img src={imgSrc} alt={bookName} />
@@ -123,36 +98,26 @@ const Main = () => {
           ))}
         </div>
 
+        {/* Library Notices */}
         <div className='secHeader' style={{ marginTop: '40px' }}>
-          <h3 className="title">Student Comments and Suggestions</h3>
+          <h3 className="title">Library Notices</h3>
         </div>
 
-        <form onSubmit={handleCommentSubmit} className='commentForm'>
-          <textarea
-            placeholder="Share your comments about the library..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            required
-          ></textarea>
-          <input
-            type="text"
-            placeholder="Suggest a book to add..."
-            value={bookSuggestion}
-            onChange={(e) => setBookSuggestion(e.target.value)}
-            required
-          />
-          <button type="submit">Submit</button>
-        </form>
-
-        <div className='commentsList'>
-          {commentsList.map((item, index) => (
-            <div key={index} className="commentItem">
-              <p><strong>Comment:</strong> {item.comment}</p>
-              <p><strong>Suggested Book:</strong> {item.bookSuggestion}</p>
-            </div>
-          ))}
+        {/* Display notices */}
+        <div className='noticesList'>
+          {notices.length > 0 ? (
+            notices.map((item, index) => (
+              <div key={index} className="noticeItem">
+                <p><strong>Notice:</strong> {item.notice}</p>
+                <p><strong>Date:</strong> {item.date}</p>
+              </div>
+            ))
+          ) : (
+            <p>No notices posted yet.</p>
+          )}
         </div>
 
+        {/* Library Schedule */}
         <div className='secHeader'>
           <h3 className="title">Library Schedule</h3>
         </div>

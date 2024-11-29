@@ -72,7 +72,6 @@ function AdminBook() {
     author: "",
     cover: dummyImg,
     category: "",
-    publishedDate: "",
     availableCopies: 0,
   });
 
@@ -101,7 +100,6 @@ useEffect(() => {
       author: "",
       cover: dummyImg,
       category: "",
-      publishedDate: "",
       availableCopies: 0,
     });
   };
@@ -172,7 +170,6 @@ useEffect(() => {
               <th>Title</th>
               <th>Author</th>
               <th>Category</th>
-              <th>Published</th>
               <th>Available</th>
               <th>Actions</th>
             </tr>
@@ -187,7 +184,6 @@ useEffect(() => {
                 <td>{book.title}</td>
                 <td>{book.author}</td>
                 <td>{book.category}</td>
-                <td>{book.publishedDate}</td>
                 <td>{book.availableCopies}</td>
                 <td>
                   <button onClick={() => goToDetails(book.id)}>View Details</button>

@@ -1,11 +1,9 @@
-// src/Components/IntermediatePage/BookTable.js
 import React from 'react';
 import img1 from '../../Assets/Book4.jpeg';
 import img2 from '../../Assets/book5.png';
 import img3 from '../../Assets/book6.jpeg';
 import img4 from '../../Assets/Book1.jpg';
-import img5 from '../../Assets/Book2.jpeg';
-import img6 from '../../Assets/Book3.jpg';
+import img6 from '../../Assets/cat4.jpg';
 import './intermediatePage.css';
 
 const book = [
@@ -32,6 +30,14 @@ const book = [
     published: 'May 29, 2020',
     author: 'Charles E. Baukal, Jr.',
     genre: 'Nonfiction · Science · Technical · Textbook',
+  },
+  {
+    id: 4, // New book added to Popular Books
+    bookName: 'The Cosmos',
+    imgSrc: img4,
+    published: 'April 15, 1995',
+    author: 'Neil deGrasse Tyson',
+    genre: 'Science · Astronomy · Nonfiction · Space · Popular Science',
   }
 ];
 
@@ -60,69 +66,51 @@ const recentlyAdded = [
     published: 'May 29, 2020',
     author: 'Charles E. Baukal, Jr., PhD (Editor)',
     genre: 'Nonfiction · Science · Technical · Textbook'
+  },
+  {
+    id: 7, // New book added to Recently Added Books
+    bookName: 'Artificial Intelligence',
+    imgSrc: img6,
+    published: 'November 2021',
+    author: 'John Doe',
+    genre: 'Nonfiction · Computer Science · AI · Technology · Textbook',
   }
 ];
 
-const BookTable = () => {
+const IntermediateGridLayout = () => {
   return (
-    <div className="book-table-container">
+    <div className="book-grid-container">
       {/* Popular Books Section */}
       <h2>Popular Books</h2>
-      <table className="book-table">
-        <thead>
-          <tr>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Published</th>
-            <th>Genre</th>
-          </tr>
-        </thead>
-        <tbody>
-          {book.map((book) => (
-            <tr key={book.id}>
-              <td className="cover-cell">
-                <img src={book.imgSrc} alt={`${book.bookName} cover`} />
-              </td>
-              <td>{book.bookName}</td>
-              <td>{book.author}</td>
-              <td>{book.published}</td>
-              <td>{book.genre}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="books-grid">
+        {book.map((book) => (
+          <div key={book.id} className="book-card">
+            <img src={book.imgSrc} alt={`${book.bookName} cover`} className="book-cover" />
+            <h3>{book.bookName}</h3>
+            <p><strong>Author:</strong> {book.author}</p>
+            <p><strong>Published:</strong> {book.published}</p>
+            <p><strong>Genre:</strong> {book.genre}</p>
+          </div>
+        ))}
+      </div>
       <button className="see-all-button">See All</button>
 
-      {/* Recently Added Section (updated books) */}
+      {/* Recently Added Section */}
       <h2>Recently Added</h2>
-      <table className="book-table">
-        <thead>
-          <tr>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Published</th>
-            <th>Genre</th>
-          </tr>
-        </thead>
-        <tbody>
-          {recentlyAdded.map((book) => (
-            <tr key={book.id}>
-              <td className="cover-cell">
-                <img src={book.imgSrc} alt={`${book.bookName} cover`} />
-              </td>
-              <td>{book.bookName}</td>
-              <td>{book.author}</td>
-              <td>{book.published}</td>
-              <td>{book.genre}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="books-grid">
+        {recentlyAdded.map((book) => (
+          <div key={book.id} className="book-card">
+            <img src={book.imgSrc} alt={`${book.bookName} cover`} className="book-cover" />
+            <h3>{book.bookName}</h3>
+            <p><strong>Author:</strong> {book.author}</p>
+            <p><strong>Published:</strong> {book.published}</p>
+            <p><strong>Genre:</strong> {book.genre}</p>
+          </div>
+        ))}
+      </div>
       <button className="see-all-button">See All</button>
     </div>
   );
 };
 
-export default BookTable;
+export default IntermediateGridLayout;

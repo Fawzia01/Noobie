@@ -103,7 +103,7 @@ const AudiobookPlayer = () => {
         <img
           src={img}
           alt="Book Cover"
-          className="ebook-cover"
+          className="audio-cover"
         />
         <h2 className="book-title">Harry Potter and the Philosopher's Stone</h2>
         <p className="book-author">by J.K. Rowling</p>

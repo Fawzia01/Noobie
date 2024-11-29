@@ -125,11 +125,6 @@ const Navbar = () => {
               </span>
             </li>
 
-            <li className="navItem" onClick={() => handleRedirectToLogin('/research')}>
-              <span className="navLink">
-                <i className="fas fa-flask"></i> {"Research"}
-              </span>
-            </li>
 
             <li className="navItem">
   <Link to="/about" className="navLink">

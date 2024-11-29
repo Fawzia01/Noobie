@@ -88,6 +88,7 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px;
     margin-left: 150px;
+    z-index: 2;
   }
   
   .suggestions h3 {
@@ -130,23 +131,6 @@
     color: white;
   }
  
-  .sidebar-items {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar-items li {
-    cursor: pointer;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-  }
-  
-  .sidebar-items li:hover {
-    background-color: #ddd;
-  }
   
   /* Submenu styling */
   .submenu {
@@ -164,4 +148,56 @@
   .submenu li:hover {
     background-color: #eaeaea;
   }
-  
+
+
+.suggest-box {
+  position: absolute;
+  top: -10px; /* Positioning it above the icon */
+  left: 35px; /* Positioning the box near the icon */
+  padding: 5px 10px;
+  background-color: grey;
+  color: white;
+  font-size: 12px;
+  border-radius: 3px;
+  display: none; /* Initially hidden */
+  z-index: 2;
+  white-space: nowrap; /* Prevent text wrapping */
+  min-width: 100px; /* Ensure enough width for the text */
+  max-width: 200px; /* Maximum width to avoid overflow */
+  text-overflow: ellipsis; /* Adds "..." if text overflows */
+  overflow: auto; /* Hide overflowed content */
+}
+
+.suggest-box.show {
+  display: block; /* Show the suggestion box when the class 'show' is added */
+}
+
+/* Show suggestion box only when hovering over the icon (on collapsed sidebar) */
+.sidebar:not(.expanded) .suggest-box {
+  display: block; /* Show the suggestion box when hovering over the icon */
+}
+
+.menu-icon {
+  font-size: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+/* Navbar Icons */
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon {
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.icon:hover {
+  color: #007bff;
+}
+
