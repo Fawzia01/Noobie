@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation, useMatch } from 'react-router-dom';
 import './app.css';
 import Navbar from './Components/Homepage/Navbar/Navbar';
@@ -24,6 +24,7 @@ import MEBooks from './Components/Dashboard/Functions/Book/mebooks';
 import Profile from './Components/Profile/profile';
 import Feedback from './Components/Dashboard/Functions/Feedback/feedback';
 import SettingsPage from './Components/Dashboard/Functions/Settings/settings';
+import AdminEbook from './Components/AdminDash/Function/AdminEbook/adminebook';
 
 const App = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ const App = () => {
   const addMember = (newMember) => {
     setMembers((prevMembers) => [...prevMembers, newMember]);
   };
+ 
 
   // Use useMatch to dynamically match routes like /bookdetail/:id
   const matchBookDetail = useMatch('/bookdetail/:id');
@@ -55,7 +57,8 @@ const App = () => {
     '/eebooks',
     '/profile',
     '/feedback',
-    '/settings'
+    '/settings',
+     '/adminebook'
 
   ];
    
@@ -92,6 +95,7 @@ const App = () => {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/feedback" element={<Feedback/>}/>
         <Route path="/settings" element={<SettingsPage />}/>
+        <Route path="/adminebook" element={<AdminEbook/>}/>
       </Routes>
     </div>
   );

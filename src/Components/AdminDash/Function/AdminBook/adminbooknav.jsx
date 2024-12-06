@@ -3,6 +3,7 @@ import { IconButton, TextField, InputAdornment, MenuItem, Select, Avatar } from 
 import { Search, Notifications, Settings, Message } from "@mui/icons-material";
 import { GiBookCover } from "react-icons/gi";
 import "./adminbook.css"; // Ensure your CSS is correct
+import  dummyimg  from  '../../../../Assets/dummy.jpeg';
 // Importing book cover images
 import img1 from "../../../../Assets/chap1pic.jpeg";
 import img2 from "../../../../Assets/chap3.jpeg";
@@ -24,7 +25,8 @@ import img17 from "../../../../Assets/chap11.jpg";
 import img18 from "../../../../Assets/chap12.jpeg";
 import img19 from "../../../../Assets/cat7.jpg";
 import img20 from "../../../../Assets/cat8.jpg";
-
+import './adminbook.css';
+import dummyImg from  '../../../../Assets/dummy.jpeg';
 // Full list of books
 const initialBooks = [
    // StoryBooks Section (5 Books)
@@ -56,32 +58,59 @@ const initialBooks = [
    { id: '20', title: 'Dynamics of Machinery', author: 'Ansel C. Ugural', cover: img20, category: 'Mechanical Engineering', publishedDate: '2004-10-01', availableCopies: 4 },
 ];
 
+function BookNavBar({
+  books = initialBooks,
+  searchTerm,
+  setSearchTerm,
+  onSearch, // Assuming onSearch is passed from the parent to handle book filtering
+  onSelectBook
+}) {
+  const [filterType, setFilterType] = useState("title"); // Default filter is 'title'
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [suggestedBooks, setSuggestedBooks] = useState([]);
 
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value); // Update the search term
 
-function BookNavBar({ books = [], searchTerm, setSearchTerm, setFilteredBooks }) {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  // Handle filtering based on search term and selected category
-  useEffect(() => {
-    // Make sure books is not empty or undefined
-    if (!Array.isArray(books) || books.length === 0) {
-      console.error("Books array is undefined or empty");
+    // If search term is empty, clear suggestions and reset filter
+    if (value.trim() === "") {
+      setSuggestedBooks([]); // Clear suggestions if the search term is empty
+      onSearch(value, filterType); // Reset filter
       return;
     }
 
-    // Filter books based on search term and category
-    const filtered = books.filter((book) => {
-      const matchesSearch = 
-        book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchTerm.toLowerCase());
-        
-      const matchesCategory = selectedCategory === "All" || book.category === selectedCategory;
+    // Filter suggestions based on search term and filter type
+    const filteredSuggestions = books.filter((book) =>
+      book[filterType].toLowerCase().includes(value.toLowerCase())
+    );
+    setSuggestedBooks(filteredSuggestions); // Set the filtered suggestions
 
-      return matchesSearch && matchesCategory;
-    });
+    // Trigger the parent function to update filtered books
+    onSearch(value, filterType);
+  };
 
-    setFilteredBooks(filtered); // Update filtered books
-  }, [searchTerm, selectedCategory, books, setFilteredBooks]);
+  // Handle filter change
+  const handleFilterChange = (type) => {
+    setFilterType(type);
+    onSearch(searchTerm, type); // Update filter and trigger search
+  };
+
+  // Handle book click to select
+  const handleBookClick = (book) => {
+    if (book && book.id) {
+      onSelectBook(book.id); // Notify parent that a book is selected
+    }
+  };
+
+  // Toggle filter visibility
+  const toggleFilter = () => setFilterVisible(!filterVisible);
+
+  useEffect(() => {
+    // Whenever searchTerm or filterType changes, update filtered books in parent via onSearch
+    onSearch(searchTerm, filterType);
+  }, [searchTerm, filterType, onSearch]);
 
   return (
     <nav className="booknavbar">
@@ -92,53 +121,83 @@ function BookNavBar({ books = [], searchTerm, setSearchTerm, setFilteredBooks })
         </IconButton>
       </div>
 
-      {/* Center Section - Search Bar and Category Filter */}
       <div className="booknavbar-center">
-        <TextField
-          variant="outlined"
-          placeholder="Search Books..."
-          size="small"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-          className="booknavbar-search"
-          fullWidth
-        />
+  <TextField
+    variant="outlined"
+    size="small"
+    className="admin-search-bar"
+    placeholder={`Search by ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}...`} // Dynamic placeholder
+    value={searchTerm} // Binds the search term state
+    onChange={handleSearchChange} // Updates state on input change
+    InputProps={{
+      startAdornment: (
+        <InputAdornment position="start">
+          <i className="fas fa-search" /> {/* Optionally add a search icon */}
+        </InputAdornment>
+      ),
+    }}
+  />
 
-        {/* Category Filter Dropdown */}
-        <Select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)} // Update selected category
-          className="category-filter"
-          variant="outlined"
-          size="small"
-        >
-          <MenuItem value="All">All Categories</MenuItem>
-          <MenuItem value="StoryBooks">StoryBooks</MenuItem>
-          <MenuItem value="Computer Science and Engineering">Computer Science</MenuItem>
-          <MenuItem value="Electrical Engineering">Electrical Engineering</MenuItem>
-          <MenuItem value="Mechanical Engineering">Mechanical Engineering</MenuItem>
-        </Select>
+        {/* Filter Button */}
+        <button className="adfilter-button" onClick={toggleFilter}>
+          <i className="fas fa-filter"></i> Filter
+        </button>
+
+        {/* Filter Dropdown */}
+        {filterVisible && (
+          <div className="adfilter-dropdown">
+            <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
+            <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
+          </div>
+        )}
       </div>
+
+      {/* Suggested Books */}
+{searchTerm && suggestedBooks.length > 0 && (
+  <div className="adsuggestions">
+    <h3>Suggested Books:</h3>
+    <ul>
+      {suggestedBooks.map((book) => (
+        <li
+          key={book.id} // Unique key for each item
+          onClick={() => handleBookClick(book)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            marginBottom: "10px",
+          }}
+        >
+          <img
+            src={book.cover || dummyImg} // Use dummyImg if no cover provided
+            alt={book.title}
+            style={{
+              width: "50px",
+              height: "auto",
+              marginRight: "10px",
+              borderRadius: "4px",
+            }}
+          />
+          <span>{book.title} by {book.author}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
 
       {/* Right Section - Icons and Avatar */}
       <div className="booknavbar-right">
-        <IconButton className="bookicon-button">
+        <IconButton className="icon-button">
           <Message />
         </IconButton>
-        <IconButton className="bookicon-button">
+        <IconButton className="icon-button">
           <Notifications />
         </IconButton>
-        <IconButton className="bookicon-button">
+        <IconButton className="icon-button">
           <Settings />
         </IconButton>
-        <Avatar alt="Profile" src="/path/to/profile-picture.jpg" className="profile-avatar" />
+        <Avatar alt="Profile" src={dummyimg} className="profile-avatar" />
       </div>
     </nav>
   );

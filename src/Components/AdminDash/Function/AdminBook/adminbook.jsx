@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react"; // Include useEffect here
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../../../Header/header"; // Import Header component
-import "./adminbook.css"; // CSS for the component
-import dummyImg from "../../../../Assets/dummy.jpeg";
-import img from "../../../../Assets/bookcatalogue.jpg";
+import "./adminbook.css";
 import AdminSidebar from "../../adminheader/AdminSidebar";
 import AdminBookNav from "../../Function/AdminBook/adminbooknav";
-
+import dummyImg from "../../../../Assets/dummy.jpeg";
+import img from "../../../../Assets/bookcatalogue.jpg";
 // Importing book cover images
 import img1 from "../../../../Assets/chap1pic.jpeg";
 import img2 from "../../../../Assets/chap3.jpeg";
@@ -61,113 +59,144 @@ const initialBooks = [
 ];
 
 
-function AdminBook() {
+const AdminBook = () => {
   const [books, setBooks] = useState(initialBooks);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
   const [isAddBookDialogOpen, setIsAddBookDialogOpen] = useState(false);
   const [newBook, setNewBook] = useState({
     title: "",
     author: "",
-    cover: dummyImg,
     category: "",
+    cover: "",
     availableCopies: 0,
   });
-
-  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const navigate = useNavigate();
 
-// Update suggestions based on both search term and selected category
-useEffect(() => {
-  const filteredByCategory = selectedCategory === "All"
-    ? books
-    : books.filter((book) => book.category.toLowerCase() === selectedCategory.toLowerCase());
+  const API_BASE_URL = "http://localhost:8080/api/admin/books";
 
-  const filteredSuggestions = searchTerm.trim()
-    ? filteredByCategory.filter((book) => book.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    : filteredByCategory;
+  // Fetch all books and merge with initialBooks
+  useEffect(() => {
+    fetch(API_BASE_URL)
+      .then((res) => res.json())
+      .then((data) => setBooks((prevBooks) => [...prevBooks, ...data]))
+      .catch((err) => console.error("Error fetching books:", err));
+  }, []);
 
-  setSuggestions(filteredSuggestions);
-}, [searchTerm, selectedCategory, books]);
-  
-  const openAddBookDialog = () => setIsAddBookDialogOpen(true);
 
-  const closeAddBookDialog = () => {
-    setIsAddBookDialogOpen(false);
-    setNewBook({
-      title: "",
-      author: "",
-      cover: dummyImg,
-      category: "",
-      availableCopies: 0,
-    });
-  };
+  // Search suggestions
+  useEffect(() => {
+    const filteredByCategory =
+      selectedCategory === "All"
+        ? books
+        : books.filter(
+            (book) =>
+              book.category.toLowerCase() === selectedCategory.toLowerCase()
+          );
+    const filteredSuggestions = searchTerm.trim()
+      ? filteredByCategory.filter((book) =>
+          book.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : filteredByCategory;
+    setSuggestions(filteredSuggestions);
+  }, [searchTerm, selectedCategory, books]);
 
+  // Add a new book
   const addBook = () => {
-    setBooks([...books, { id: (books.length + 1).toString(), ...newBook }]);
-    closeAddBookDialog();
+    const newBookWithId = { id: (books.length + 1).toString(), ...newBook };
+    setBooks([...books, newBookWithId]);
+
+    fetch(API_BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newBook),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setBooks((prevBooks) =>
+          prevBooks.map((book) =>
+            book.id === newBookWithId.id ? data : book
+          )
+        );
+      })
+      .catch((err) => console.error("Error adding book:", err))
+      .finally(() => closeAddBookDialog());
   };
+
+  // Delete a book
+  const deleteBook = (id) => {
+    fetch(`${API_BASE_URL}/${id}`, { method: "DELETE" })
+      .then(() => setBooks(books.filter((book) => book.id !== id)))
+      .catch((err) => console.error("Error deleting book:", err));
+  };
+
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewBook({ ...newBook, [name]: value });
   };
 
-  
-
-  const deleteBook = (id) => {
-    setBooks(books.filter((book) => book.id !== id));
+  // Dialog Handlers
+  const openAddBookDialog = () => setIsAddBookDialogOpen(true);
+  const closeAddBookDialog = () => {
+    setIsAddBookDialogOpen(false);
+    setNewBook({
+      title: "",
+      author: "",
+      category: "",
+      cover: "",
+      availableCopies: 0,
+    });
   };
 
+  // Navigate to book details
   const goToDetails = (id) => navigate(`/bookdetail/${id}`);
+
+  const [filteredBooks, setFilteredBooks] = useState(initialBooks); // Default to all books
+      const [selectedBookId, setSelectedBookId] = useState(null);
+
+  const handleSearch = (searchTerm, filterType) => {
+    if (searchTerm.trim() === "") {
+      setFilteredBooks(initialBooks); // If no search term, show all books
+      return;
+    }
+
+    const filtered = initialBooks.filter((book) =>
+      book[filterType].toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredBooks(filtered); // Update filtered books based on search term
+  };
+
+  const handleSelectBook = (bookId) => {
+    setSelectedBookId(bookId); // Update the selected book ID
+  };
+  
 
   return (
     <div className="admin-book-container">
       <AdminSidebar />
       <AdminBookNav
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
-
-      {/* Search Suggestions */}
-      {searchTerm && suggestions.length > 0 && (
-        <div className="search-suggestions-box">
-          {suggestions.map((book) => (
-            <div
-              key={book.id}
-              className="search-suggestion"
-              onClick={() => goToDetails(book.id)}
-            >
-              <img
-                src={book.cover}
-                alt={book.title}
-                style={{ width: "50px", height: "auto", marginRight: "10px" }}
-              />
-              <span>{book.title}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className={`admain-content ${isSidebarExpanded ? "shrink" : ""}`}>
+       books={initialBooks} onSearch={handleSearch}  onSelectBook={handleSelectBook} searchTerm={searchTerm}
+       setSearchTerm={setSearchTerm} 
+       setFilteredBooks={setFilteredBooks} />
+   
+      <div className="admain-content">
         <div className="adbook-welcome-bar">
           <div className="adbook-welcome-text">
             <h1>Book Management</h1>
-            <p>Manage the book catalog, edit or delete books, and add new books to the system.</p>
+            <p>
+              Manage the book catalog, edit or delete books, and add new books
+              to the system.
+            </p>
           </div>
           <div className="adbook-welcome-image">
             <img src={img} alt="Book Catalogue" />
           </div>
         </div>
-
-        {/* Add Book Button */}
         <div className="add-book-button">
           <button onClick={openAddBookDialog}>Add New Book</button>
         </div>
-
-        {/* Book Table */}
         <table border="1" className="admin-book-table">
           <thead>
             <tr>
@@ -181,92 +210,91 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>
-          {books
-            .filter((book) => selectedCategory === "All" || book.category === selectedCategory)
-            .map((book) => (
+          {filteredBooks.length > 0 ? (
+                  filteredBooks.map((book) => (
               <tr key={book.id}>
                 <td>{book.id}</td>
-                <td><img src={book.cover} alt={book.title} style={{ width: "80px" }} /></td>
+                <td>
+                  <img
+                    src={book.cover || dummyImg}
+                    alt={book.title}
+                    style={{ width: "50px", height: "auto" }}
+                  />
+                </td>
                 <td>{book.title}</td>
                 <td>{book.author}</td>
                 <td>{book.category}</td>
                 <td>{book.availableCopies}</td>
                 <td>
-                  <button onClick={() => goToDetails(book.id)}>View Details</button>
-                  <button onClick={()=>deleteBook(book.id)}>Delete</button>
+                  <button onClick={() => goToDetails(book.id)}>Details</button>
+                  <button onClick={() => deleteBook(book.id)}>Delete</button>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7">No books found</td>
+            </tr>
+          )}
           </tbody>
         </table>
-      </div>
-
-      {/* Add Book Dialog */}
-      {isAddBookDialogOpen && (
-        <div className="add-book-dialog">
-          <div className="dialog-content">
-            <h2>Add New Book</h2>
-            <label>
-              Book Cover (URL):
-              <input
-                type="text"
-                name="cover"
-                value={newBook.cover}
-                onChange={handleInputChange}
-                placeholder="Enter book cover URL"
-              />
-            </label>
-            
-            <label>
-              Title:
-              <input
-                type="text"
-                name="title"
-                value={newBook.title}
-                onChange={handleInputChange}
-                placeholder="Enter book title"
-              />
-            </label>
-            
-            <label>
-              Author:
-              <input
-                type="text"
-                name="author"
-                value={newBook.author}
-                onChange={handleInputChange}
-                placeholder="Enter author's name"
-              />
-            </label>
-            
-            <label>
-              Category:
-              <input
-                type="text"
-                name="category"
-                value={newBook.category}
-                onChange={handleInputChange}
-                placeholder="Enter book category"
-              />
-            </label>
-            
-            <label>
-              Available Copies:
-              <input
-                type="number"
-                name="availableCopies"
-                value={newBook.availableCopies}
-                onChange={handleInputChange}
-                min="1"
-              />
-            </label>
-            <button onClick={addBook}>Add Book</button>
-            <button onClick={closeAddBookDialog}>Cancel</button>
+        {isAddBookDialogOpen && (
+          <div className="add-book-dialog">
+            <div className="dialog-content">
+              <h2>Add New Book</h2>
+              <label>
+                Book Cover (URL):
+                <input
+                  type="text"
+                  name="cover"
+                  value={newBook.cover}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Title:
+                <input
+                  type="text"
+                  name="title"
+                  value={newBook.title}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Author:
+                <input
+                  type="text"
+                  name="author"
+                  value={newBook.author}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Category:
+                <input
+                  type="text"
+                  name="category"
+                  value={newBook.category}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <label>
+                Available Copies:
+                <input
+                  type="number"
+                  name="availableCopies"
+                  value={newBook.availableCopies}
+                  onChange={handleInputChange}
+                />
+              </label>
+              <button onClick={addBook}>Add</button>
+              <button onClick={closeAddBookDialog}>Cancel</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default AdminBook;

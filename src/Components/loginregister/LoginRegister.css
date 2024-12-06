@@ -356,3 +356,30 @@ form .signup-link{
     text-align: center;
     margin-top: 20px; /* Add spacing if needed */
 }
+.auth-container {
+    position: relative;
+}
+
+.phone-container {
+    margin-bottom: 20px;
+}
+
+.phone-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.phone-input-group input {
+    flex: 1;
+}
+
+.remember-forgot {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // For navigation
 import dummyImg from "../../Assets/dummy.jpeg";
 import Profile from "../../Components/Profile/profile";
@@ -15,8 +15,21 @@ const Header = ( {books, onSearch } ) => {
 
   // State to control the visibility of the settings page modal
   const [isSettingsPageOpen, setSettingsPageOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarExpanded(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   const handleLogout = () => {
     // Clear any user-related data (e.g., tokens)
     localStorage.removeItem('authToken'); // Example: Remove the authentication token
@@ -84,7 +97,7 @@ const Header = ( {books, onSearch } ) => {
   return (
     <div>
       {/* Sidebar */}
-      <div className={`sidebar ${isSidebarExpanded ? "expanded" : ""}`}>
+      <div ref={sidebarRef}  className={`sidebar ${isSidebarExpanded ? "expanded" : ""}`}>
         <ul className="sidebar-items">
           {/* Book Catalogue */}
           <li onClick={toggleCatalogue}>

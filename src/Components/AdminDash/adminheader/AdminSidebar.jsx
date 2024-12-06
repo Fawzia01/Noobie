@@ -41,7 +41,7 @@ function AdminSidebar() {
         </ListItemButton>
 
         {/* E-books */}
-        <ListItemButton className="sidebar-item">
+        <ListItemButton className="sidebar-item"  onClick={() => handleNavigation('/adminebook')}>
           <ListItemIcon>
             <MenuBook />
           </ListItemIcon>

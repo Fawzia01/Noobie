@@ -1,6 +1,7 @@
 import React from "react";
 import { IconButton, Typography, Avatar, TextField, InputAdornment } from "@mui/material";
 import { Notifications, Settings, Message, Search } from '@mui/icons-material';
+import dummyimg from '../../../Assets/dummy.jpeg';
 
 function AdminNav() {
   return (
@@ -43,7 +44,7 @@ function AdminNav() {
         <IconButton className="icon-button">
           <Settings /> {/* Settings Icon */}
         </IconButton>
-        <Avatar alt="John Anderson" src="/path/to/profile-picture.jpg" className="profile-avatar" />
+        <Avatar alt="John Anderson" src={dummyimg} className="profile-avatar" />
       </div>
     </nav>
   );
