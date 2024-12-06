@@ -63,7 +63,7 @@ function BookNavBar({
   searchTerm,
   setSearchTerm,
   onSearch, // Assuming onSearch is passed from the parent to handle book filtering
-  onSelectBook
+  onSelectBook,hidepart
 }) {
   const [filterType, setFilterType] = useState("title"); // Default filter is 'title'
   const [filterVisible, setFilterVisible] = useState(false);
@@ -137,7 +137,7 @@ function BookNavBar({
       ),
     }}
   />
-
+{hidepart && (<>
         {/* Filter Button */}
         <button className="adfilter-button" onClick={toggleFilter}>
           <i className="fas fa-filter"></i> Filter
@@ -150,7 +150,10 @@ function BookNavBar({
             <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
           </div>
         )}
+    
+      </>)}
       </div>
+
 
       {/* Suggested Books */}
 {searchTerm && suggestedBooks.length > 0 && (

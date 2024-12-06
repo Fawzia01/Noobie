@@ -396,6 +396,7 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
+    margin-left: 20px;
   }
   
   /* Filter dropdown styling */
@@ -410,6 +411,8 @@ body {
     border-radius: 4px;
     z-index: 100;
     width: 150px;
+    margin-left: 200px;
+   
   }
   
   .adsuggestions {

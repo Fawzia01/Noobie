@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AdminSidebar from "../../adminheader/AdminSidebar";
-import AdminBookNav from "../../../AdminDash/Function/AdminBook/adminbooknav";
+import BookNavBar from "../../../AdminDash/Function/AdminBook/adminbooknav";
 import dummyImg from "../../../../Assets/dummy.jpeg";
 import img from "../../../../Assets/audiobook.jpg";
 // Importing book cover images
@@ -221,8 +221,6 @@ const AdminEBook = () => {
 
   const [newBook, setNewBook] = useState({
     title: "",
-    author: "",
-    category: "",
     cover: "",
     pdfUrl: "",
     audiobookUrl: "",
@@ -314,8 +312,6 @@ const AdminEBook = () => {
     setIsAddBookDialogOpen(false);
     setNewBook({
       title: "",
-      author: "",
-      category: "",
       cover: "",
       pdfUrl: "",
       audiobookUrl: "",
@@ -347,12 +343,13 @@ const AdminEBook = () => {
   return (
     <div className="admin-book-container">
       <AdminSidebar />
-      <AdminBookNav
+      <BookNavBar
         books={books}
         onSearch={handleSearch}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         onSelectBook={handleSelectBook}
+        hidepart={true}
       />
 
       <div className="admain-content">
@@ -380,9 +377,7 @@ const AdminEBook = () => {
                 <tr>
                   <th>ID</th>
                   <th>Cover</th>
-                  <th>Title</th>
-                  <th>Author</th>
-                  <th>Category</th>
+                  <th>Title</th>               
                   <th>PDF</th>
                   <th>Actions</th>
                 </tr>
@@ -400,8 +395,7 @@ const AdminEBook = () => {
                         />
                       </td>
                       <td>{book.title}</td>
-                      <td>{book.author}</td>
-                      <td>{book.category}</td>
+                      
                       <td>
                         <a
                           href={book.pdfUrl}
@@ -458,24 +452,7 @@ const AdminEBook = () => {
                       onChange={handleInputChange}
                     />
                   </label>
-                  <label>
-                    Author:
-                    <input
-                      type="text"
-                      name="author"
-                      value={newBook.author}
-                      onChange={handleInputChange}
-                    />
-                  </label>
-                  <label>
-                    Category:
-                    <input
-                      type="text"
-                      name="category"
-                      value={newBook.category}
-                      onChange={handleInputChange}
-                    />
-                  </label>
+                  
                   <label>
                     PDF URL:
                     <input

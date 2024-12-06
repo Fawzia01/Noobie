@@ -6,7 +6,7 @@ import Profile from "../../Components/Profile/profile";
 
 import './header.css'; // Combined CSS
 
-const Header = ( {books, onSearch } ) => {
+const Header = ( {books, onSearch,hidepart } ) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestedBooks, setSuggestedBooks] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false); // For showing/hiding filter dropdown
@@ -161,14 +161,18 @@ const Header = ( {books, onSearch } ) => {
           onChange={handleSearchChange}
         />
         {/* Filter Button */}
-        <button className="filter-button" onClick={toggleFilter}>
-          <i className="fas fa-filter"></i> Filter
-        </button>
-        {filterVisible && (
-        <div className="filter-dropdown">
-          <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
-          <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
-        </div>
+      {!hidepart && (
+        <>
+          <button className="filter-button" onClick={toggleFilter}>
+            <i className="fas fa-filter"></i> Filter
+          </button>
+          {filterVisible && (
+            <div className="filter-dropdown">
+              <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
+              <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
+            </div>
+          )}
+        </>
       )}
 
 

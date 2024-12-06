@@ -248,7 +248,7 @@ export default function EbookPage() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   return (
     <div className="ebook-page-container">
-        <Header books={books} onSearch={handleSearch}  onSelectBook={handleSelectBook} />
+        <Header books={books} onSearch={handleSearch}  onSelectBook={handleSelectBook} hidepart={true}  />
             {/* Main Content */}
       <div className={`main-content ${isSidebarExpanded ? "shrink" : ""}`}>
         {/* Welcome Bar */}
