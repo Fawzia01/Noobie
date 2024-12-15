@@ -49,7 +49,7 @@ function AdminSidebar() {
         </ListItemButton>
 
         {/* Dues */}
-        <ListItemButton className="sidebar-item">
+        <ListItemButton className="sidebar-item" onClick={()=> handleNavigation('/adminpay')}>
           <ListItemIcon>
             <MonetizationOn />
           </ListItemIcon>
@@ -57,30 +57,17 @@ function AdminSidebar() {
         </ListItemButton>
 
         {/* Feedback */}
-        <ListItemButton className="sidebar-item">
+        <ListItemButton className="sidebar-item"  onClick={() => handleNavigation('/adminfeed')}>
+      
           <ListItemIcon>
             <Feedback />
           </ListItemIcon>
           <ListItemText primary="Feedback" />
         </ListItemButton>
 
-        {/* Research */}
-        <ListItemButton className="sidebar-item">
-          <ListItemIcon>
-            <Search />
-          </ListItemIcon>
-          <ListItemText primary="Research" />
-        </ListItemButton>
-
         <Divider /> {/* Optional Divider for separation */}
 
-        {/* Profile */}
-        <ListItemButton className="sidebar-item">
-          <ListItemIcon>
-            <AccountCircle />
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItemButton>
+  
       </List>
     </div>
   );

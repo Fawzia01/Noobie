@@ -25,7 +25,8 @@ import Profile from './Components/Profile/profile';
 import Feedback from './Components/Dashboard/Functions/Feedback/feedback';
 import SettingsPage from './Components/Dashboard/Functions/Settings/settings';
 import AdminEbook from './Components/AdminDash/Function/AdminEbook/adminebook';
-
+import AdminFeedback from './Components/AdminDash/Function/AdminFeed/adminfeed';
+import AdminPayment from './Components/AdminDash/Function/Adminpay/adminpay';
 const App = () => {
   const location = useLocation();
   const [members, setMembers] = useState([]); // Initial state is an empty array
@@ -58,7 +59,9 @@ const App = () => {
     '/profile',
     '/feedback',
     '/settings',
-     '/adminebook'
+     '/adminebook',
+     '/adminfeed',
+     '/adminpay'
 
   ];
    
@@ -96,6 +99,8 @@ const App = () => {
         <Route path="/feedback" element={<Feedback/>}/>
         <Route path="/settings" element={<SettingsPage />}/>
         <Route path="/adminebook" element={<AdminEbook/>}/>
+        <Route path="/adminfeed" element={<AdminFeedback/>}/>
+        <Route path="/adminpay"element={<AdminPayment/>}/>
       </Routes>
     </div>
   );

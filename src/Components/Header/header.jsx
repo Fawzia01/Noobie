@@ -204,6 +204,7 @@ const Header = ( {books, onSearch,hidepart } ) => {
       <Profile
         isOpen={isModalOpen}
         onClose={closeModal}
+        hidenpart={true}
         student={{
           profilePicture: dummyImg,
           name: "Sarah cannor",

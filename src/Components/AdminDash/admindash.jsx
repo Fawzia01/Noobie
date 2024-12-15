@@ -40,25 +40,25 @@ function AdminDash() {
   const cardData = [
     {
       title: "Total Members",
-      count: 120,
+      count: 20,
       gradient: "linear-gradient(45deg, #ff6ec7, #ff7b9d)",
-      chartData: [40, 30, 20, 10],
+      chartData: [4, 3, 2, 1],
       chartType: "dot", // Dot chart type for "Total Members"
       icon: <LibraryBooksIcon style={{ fontSize: 40, color: "white" }} />, // Icon for Books
     },
     {
       title: "Total Books",
-      count: 950,
+      count: 20,
       gradient: "linear-gradient(45deg, #36a2eb, #5a8fbf)",
-      chartData: [35, 25, 25, 15],
+      chartData: [6, 4, 5, 5],
       chartType: "bar",
       icon: <BookIcon style={{ fontSize: 40, color: "white" }} />, // Icon for E-books
     },
     {
       title: "Total E-books",
-      count: 300,
+      count: 20,
       gradient: "linear-gradient(45deg, #ffce56, #ffdf74)",
-      chartData: [50, 30, 10, 10],
+      chartData: [6, 4, 5, 5],
       chartType: "bar",
       icon: <LibraryBooksIcon style={{ fontSize: 40, color: "white" }} />, // Icon for Books
     },
@@ -101,10 +101,10 @@ function AdminDash() {
 
   // Define missing chart data for additional charts
   const doughnutData = {
-    labels: ["Fancy", "Science", "thriller", "Mystery"],
+    labels: ["CSE", "EE", "ME", "Story"],
     datasets: [
       {
-        data: [40, 30, 20, 10],
+        data: [6, 4, 5, 5],
         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
       },
     ],
@@ -116,17 +116,10 @@ function AdminDash() {
       {
         label: "New Members",
         backgroundColor: "#36A2EB",
-        data: [10, 20, 30, 40, 50],
+        data: [1, 2, 3, 4, 5],
       },
     ],
   };
-  const feedbackList = [
-    { id: '01', comment: 'I think a book on Data Science would be a great addition to the library!' },
-    { id: '02', comment: 'The website could use a dark mode feature to make it easier on the eyes.' },
-    { id: '03', comment: 'How about adding more fantasy novels to the collection?' },
-    { id: '04', comment: 'It would be great if we could filter books by their genre on the homepage.' },
-  ];
-
 
   const lineData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May"],
@@ -250,7 +243,7 @@ function AdminDash() {
             <Line data={lineData} />
           </div>
         </div>
-        <Feedback feedbackList={feedbackList} />
+       
       </div>
     </div>
   );

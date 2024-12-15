@@ -349,13 +349,11 @@ const AdminEBook = () => {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         onSelectBook={handleSelectBook}
-        hidepart={true}
+        hidepart={false}
       />
 
       <div className="admain-content">
-        {isLoading ? (
-          <p>Loading books...</p> // Display loading message while waiting for the API
-        ) : (
+    
           <>
             <div className="adbook-welcome-bar">
               <div className="adbook-welcome-text">
@@ -429,6 +427,7 @@ const AdminEBook = () => {
                 )}
               </tbody>
             </table>
+          
 
             {isAddBookDialogOpen && (
               <div className="add-book-dialog">
@@ -477,10 +476,11 @@ const AdminEBook = () => {
               </div>
             )}
           </>
-        )}
+        
       </div>
     </div>
   );
 };
 
 export default AdminEBook;
+

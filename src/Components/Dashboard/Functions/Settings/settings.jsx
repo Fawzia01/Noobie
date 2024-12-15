@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // For making HTTP requests to the backend
 import './settings.css';
 
-const SettingsPage = () => {
-  const [userData, setUserData] = useState({
+const SettingsPage = ({ studentData }) => {
+  const [userData, setUserData] = useState(studentData ||{
     id: '',
     name: '',
     dept: '',
@@ -21,6 +21,12 @@ const SettingsPage = () => {
     fontSize: 'Medium',
     readingMode: 'Day',
   });
+  useEffect(() => {
+    // Pre-fill user data if available
+    if (studentData) {
+      setUserData(studentData);
+    }
+  }, [studentData]);
 
   // Load dark mode preference from localStorage
   useEffect(() => {

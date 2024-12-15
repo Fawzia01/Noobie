@@ -10,14 +10,26 @@ const FeedbackForm = () => {
     isFirstVisit: '',
     improvementSuggestions: '',
     bookSuggestions: '',
-    foundWhatNeeded: '',
-    userFriendliness: 0,
+    foundWhatNeeded: [],
+    userFriendliness: '',
   });
 
   // Handles the changes in form inputs
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+
+    if (type === 'checkbox') {
+      setFormData((prevState) => {
+        const foundWhatNeeded = prevState.foundWhatNeeded;
+        if (checked) {
+          return { ...prevState, foundWhatNeeded: [...foundWhatNeeded, value] };
+        } else {
+          return { ...prevState, foundWhatNeeded: foundWhatNeeded.filter((item) => item !== value) };
+        }
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   // Handles form submission
@@ -42,33 +54,34 @@ const FeedbackForm = () => {
           </div>
         </div>
 
-        {/* Feedback Form */}
         <form onSubmit={handleSubmit}>
+          {/* Full Name */}
           <div className="form-group">
-            <label>Enter Your Full Name *</label>
+            <label htmlFor="fullName">Full Name</label>
             <input
               type="text"
               name="fullName"
+              id="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              required
               className="form-input"
             />
           </div>
 
+          {/* Email */}
           <div className="form-group">
-            <label>Your Email Address *</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               name="email"
+              id="email"
               value={formData.email}
               onChange={handleChange}
-              required
               className="form-input"
-              placeholder='Your email address will not be disclosed'
             />
           </div>
 
+          {/* First Visit */}
           <div className="form-group">
             <label>Is this the first time you have visited the website? *</label>
             <div>
@@ -95,6 +108,7 @@ const FeedbackForm = () => {
             </div>
           </div>
 
+          {/* Improvement Suggestions */}
           <div className="form-group">
             <label>What improvement do you want us to make?</label>
             <textarea
@@ -105,16 +119,7 @@ const FeedbackForm = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label>Suggest what books you want to be added:</label>
-            <textarea
-              name="bookSuggestions"
-              value={formData.bookSuggestions}
-              onChange={handleChange}
-              className="form-textarea"
-            />
-          </div>
-
+          {/* Found What Needed */}
           <div className="form-group">
             <label>Did you find what you needed? *</label>
             <div>
@@ -148,6 +153,7 @@ const FeedbackForm = () => {
             </div>
           </div>
 
+          {/* User Friendliness */}
           <div className="form-group">
             <label>User Friendliness *</label>
             <div className="rating-emoji">
@@ -193,7 +199,7 @@ const FeedbackForm = () => {
                   onChange={handleChange}
                 />
                 <span role="img" aria-label="happy" className="emoji">
-                  🙂 
+                  🙂
                 </span>
               </label>
               <label>
@@ -210,6 +216,7 @@ const FeedbackForm = () => {
             </div>
           </div>
 
+          {/* Submit Button */}
           <button type="submit" className="submit-button">
             Send your feedback
           </button>

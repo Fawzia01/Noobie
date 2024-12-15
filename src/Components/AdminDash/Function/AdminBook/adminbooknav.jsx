@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { IconButton, TextField, InputAdornment, MenuItem, Select, Avatar } from "@mui/material";
-import { Search, Notifications, Settings, Message } from "@mui/icons-material";
+import { Search, Notifications, Settings, Logout } from "@mui/icons-material";
 import { GiBookCover } from "react-icons/gi";
 import "./adminbook.css"; // Ensure your CSS is correct
 import  dummyimg  from  '../../../../Assets/dummy.jpeg';
+import Profile from "../../../Profile/profile";
 // Importing book cover images
 import img1 from "../../../../Assets/chap1pic.jpeg";
 import img2 from "../../../../Assets/chap3.jpeg";
@@ -27,6 +28,7 @@ import img19 from "../../../../Assets/cat7.jpg";
 import img20 from "../../../../Assets/cat8.jpg";
 import './adminbook.css';
 import dummyImg from  '../../../../Assets/dummy.jpeg';
+import { Link, useNavigate } from "react-router-dom"; // For navigation
 // Full list of books
 const initialBooks = [
    // StoryBooks Section (5 Books)
@@ -58,16 +60,17 @@ const initialBooks = [
    { id: '20', title: 'Dynamics of Machinery', author: 'Ansel C. Ugural', cover: img20, category: 'Mechanical Engineering', publishedDate: '2004-10-01', availableCopies: 4 },
 ];
 
-function BookNavBar({
+const BookNavBar =({
   books = initialBooks,
   searchTerm,
   setSearchTerm,
   onSearch, // Assuming onSearch is passed from the parent to handle book filtering
   onSelectBook,hidepart
-}) {
+}) => {
   const [filterType, setFilterType] = useState("title"); // Default filter is 'title'
   const [filterVisible, setFilterVisible] = useState(false);
   const [suggestedBooks, setSuggestedBooks] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false); 
 
   // Handle search input change
   const handleSearchChange = (e) => {
@@ -111,6 +114,28 @@ function BookNavBar({
     // Whenever searchTerm or filterType changes, update filtered books in parent via onSearch
     onSearch(searchTerm, filterType);
   }, [searchTerm, filterType, onSearch]);
+  
+    const navigate = useNavigate();
+  
+    const handleLogout = () => {
+      // Clear any user-related data (e.g., tokens)
+      localStorage.removeItem("authToken"); // Example: Remove the authentication token
+      localStorage.removeItem("userInfo"); // Example: Remove user info (if applicable)
+  
+      // Redirect to login or home page
+      navigate("/login"); // Adjust the path as per your app's routing
+  
+      // Optionally, display a success message (use a toast library or alert)
+      alert("You have been logged out.");
+    };
+    // Handle Profile click
+  const handleProfileClick = () => {
+    console.log('Profile clicked!'); // Debug to ensure this runs
+    setModalOpen(true);
+  };
+
+  // Close Profile Modal
+  const closeModal = () => setModalOpen(false); 
 
   return (
     <nav className="booknavbar">
@@ -191,8 +216,8 @@ function BookNavBar({
 
       {/* Right Section - Icons and Avatar */}
       <div className="booknavbar-right">
-        <IconButton className="icon-button">
-          <Message />
+        <IconButton className="icon-button" onClick={handleLogout}>
+          <Logout/>
         </IconButton>
         <IconButton className="icon-button">
           <Notifications />
@@ -200,10 +225,30 @@ function BookNavBar({
         <IconButton className="icon-button">
           <Settings />
         </IconButton>
-        <Avatar alt="Profile" src={dummyimg} className="profile-avatar" />
+        <div className="profile" onClick={handleProfileClick}>
+            <img src={dummyImg} alt="Profile" className="profile-pic" />
+            <span className="adusername">
+      <span className="username-first">John</span>
+      <br />
+      <span className="username-last">Anderson</span>
+    </span>
+          </div>
       </div>
+      <Profile
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        hidenpart={false}
+        student={{
+          profilePicture: dummyImg,
+          name: "John Anderson",
+          email: "johndoe@mail.com",
+          address: "123, Main Street, Cityname",
+          interest: "Machine Learning, Robotics",
+        }}
+      />
+
     </nav>
   );
-}
+};
 
 export default BookNavBar;
