@@ -27,6 +27,7 @@ import SettingsPage from './Components/Dashboard/Functions/Settings/settings';
 import AdminEbook from './Components/AdminDash/Function/AdminEbook/adminebook';
 import AdminFeedback from './Components/AdminDash/Function/AdminFeed/adminfeed';
 import AdminPayment from './Components/AdminDash/Function/Adminpay/adminpay';
+import BorrowReturnPage from './Components/AdminDash/Function/Borrow/borrow';
 const App = () => {
   const location = useLocation();
   const [members, setMembers] = useState([]); // Initial state is an empty array
@@ -61,7 +62,8 @@ const App = () => {
     '/settings',
      '/adminebook',
      '/adminfeed',
-     '/adminpay'
+     '/adminpay',
+     '/borrow'
 
   ];
    
@@ -101,7 +103,8 @@ const App = () => {
         <Route path="/adminebook" element={<AdminEbook/>}/>
         <Route path="/adminfeed" element={<AdminFeedback/>}/>
         <Route path="/adminpay"element={<AdminPayment/>}/>
-      </Routes>
+        <Route path="/borrow" element={<BorrowReturnPage/>}/>
+        </Routes>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   IconButton,
   Typography,
@@ -7,11 +7,46 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Notifications, Settings, Logout, Search } from "@mui/icons-material";
-import dummyimg from "../../../Assets/dummy.jpeg";
-import { Link, useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom"; // For navigation
+import axios from "axios"; // To make API calls
 
 const AdminNav = () => {
   const navigate = useNavigate();
+  const [adminInfo, setAdminInfo] = useState(null); // State to hold admin info
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+
+  useEffect(() => {
+    const fetchAdminInfo = async () => {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        const email = userInfo?.email; // Get email from userInfo object
+        console.log("Email from localStorage:", email); // Log the email from localStorage
+
+        if (!email) {
+          setError("No email found in localStorage.");
+          setLoading(false);
+          return;
+        }
+
+        // Make API call to get logged-in admin's info using stored email
+        const response = await axios.get("http://localhost:8080/api/admin/students/profile", {
+          params: { email: email },
+        });
+        console.log("Admin data response:", response); // Log the API response
+
+      if (response.status === 200) {
+        setAdminInfo(response.data);  // Set admin info from response
+      }
+      } catch (err) {
+        setError("Error fetching admin data.");
+      } finally {
+        setLoading(false); // Set loading to false once the request is completed
+      }
+    };
+
+    fetchAdminInfo();
+  }, []);
 
   const handleLogout = () => {
     // Clear any user-related data (e.g., tokens)
@@ -25,52 +60,75 @@ const AdminNav = () => {
     alert("You have been logged out.");
   };
 
+  // Display loading, error, or admin data
   return (
-    <>
-      <nav className="admin-navbar">
-        {/* Left Section - Welcome Message */}
-        <div className="navbar-left">
-          <Typography variant="h6" className="welcome-message">
-            Welcome back,
+    <nav className="admin-navbar">
+      {/* Left Section - Welcome Message */}
+      <div className="navbar-left">
+        <Typography variant="h6" className="welcome-message">
+          Welcome back,
+        </Typography>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="error-message">{error}</p>
+        ) : adminInfo ? (
+          <Typography variant="h5" className="admin-name">
+            {adminInfo.name} {/* Admin name dynamically fetched */}
           </Typography>
-          <Typography variant="h5" className="admin-username">
-            John Anderson!
+        ) : (
+          <Typography variant="h5" className="admin-name">
+            No admin data available
           </Typography>
-        </div>
+        )}
+      </div>
 
-        {/* Center Section - Search Bar */}
-        <div className="navbar-center">
-          <TextField
-            variant="outlined"
-            placeholder="Search..."
-            size="small"
-            className="search-bar"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search /> {/* Magnifying glass icon */}
-                </InputAdornment>
-              ),
-            }}
+      {/* Center Section - Search Bar */}
+      <div className="navbar-center">
+        <TextField
+          variant="outlined"
+          placeholder="Search..."
+          size="small"
+          className="search-bar"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search /> {/* Magnifying glass icon */}
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
+
+      {/* Right Section - Icons */}
+      <div className="navbar-right">
+        <IconButton className="icon-button" onClick={handleLogout}>
+          <Logout />
+        </IconButton>
+
+        <IconButton className="icon-button">
+          <Notifications /> {/* Notifications Icon */}
+        </IconButton>
+        <IconButton className="icon-button">
+          <Settings /> {/* Settings Icon */}
+        </IconButton>
+
+        {/* Avatar */}
+        {loading ? (
+          <Avatar alt="Loading..." src="/path-to-default-image.jpg" className="profile-avatar" />
+        ) : error ? (
+          <Avatar alt="Error" src="/path-to-error-image.jpg" className="profile-avatar" />
+        ) : adminInfo ? (
+          <Avatar
+            alt={adminInfo.name}
+            src={adminInfo.profileImage || "/path-to-default-image.jpg"} // Use admin's profile image or fallback to a default image
+            className="profile-avatar"
           />
-        </div>
-
-        {/* Right Section - Icons */}
-        <div className="navbar-right">
-          <IconButton className="icon-button" onClick={handleLogout}>
-            <Logout />
-          </IconButton>
-
-          <IconButton className="icon-button">
-            <Notifications /> {/* Notifications Icon */}
-          </IconButton>
-          <IconButton className="icon-button">
-            <Settings /> {/* Settings Icon */}
-          </IconButton>
-          <Avatar alt="John Anderson" src={dummyimg} className="profile-avatar" />
-        </div>
-      </nav>
-    </>
+        ) : (
+          <Avatar alt="No Admin Data" src="/path-to-default-image.jpg" className="profile-avatar" />
+        )}
+      </div>
+    </nav>
   );
 };
 

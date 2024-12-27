@@ -40,6 +40,13 @@ function AdminSidebar() {
           <ListItemText primary="Books"/>
         </ListItemButton>
 
+        <ListItemButton className="sidebar-item" onClick={() => handleNavigation("/borrow")}>
+          <ListItemIcon>
+            <Book />
+          </ListItemIcon>
+          <ListItemText primary="Book Details"/>
+        </ListItemButton>
+
         {/* E-books */}
         <ListItemButton className="sidebar-item"  onClick={() => handleNavigation('/adminebook')}>
           <ListItemIcon>

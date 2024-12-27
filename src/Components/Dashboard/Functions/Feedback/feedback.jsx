@@ -1,49 +1,45 @@
 import React, { useState } from 'react';
-import './feedback.css'; // Import the CSS file for styling
-import Header from '../../../Header/header'; // Assuming you have a Header component
-import img from '../../../../Assets/feedback.jpg'; // Make sure this path is correct
+import axios from 'axios';
+import './feedback.css'; // Ensure your CSS file is correctly configured
+import Header from '../../../Header/header';
+import img from '../../../../Assets/feedback.jpg'; // Verify the path is accurate
 
 const FeedbackForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    isFirstVisit: '',
-    improvementSuggestions: '',
-    bookSuggestions: '',
-    foundWhatNeeded: [],
-    userFriendliness: '',
-  });
+  const [studentId, setStudentId] = useState('');
+  const [adminId] = useState('14'); // Default adminId, you can change this logic if needed
+  const [description, setDescription] = useState('');
+  const [rating, setRating] = useState(''); // Emoji rating
 
-  // Handles the changes in form inputs
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (type === 'checkbox') {
-      setFormData((prevState) => {
-        const foundWhatNeeded = prevState.foundWhatNeeded;
-        if (checked) {
-          return { ...prevState, foundWhatNeeded: [...foundWhatNeeded, value] };
-        } else {
-          return { ...prevState, foundWhatNeeded: foundWhatNeeded.filter((item) => item !== value) };
-        }
-      });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  // Handles form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert('Feedback Submitted!');
+
+    const feedback = {
+      description,
+      rating: parseFloat(rating), // Convert the selected emoji rating to a number
+    };
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/feedback/submit/${studentId}/${adminId}',
+        feedback
+      );
+      alert('Feedback submitted successfully!');
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error details:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+      }
+      alert('Failed to submit feedback.');
+    }
   };
 
   return (
     <div className="feedback-container">
       <Header />
       <div className="main-content">
-        {/* Welcome Bar */}
+        {/* Welcome Section */}
         <div className="feedwelcome-bar">
           <div className="welcome-text">
             <h2>Feedback</h2>
@@ -54,115 +50,40 @@ const FeedbackForm = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          {/* Full Name */}
+        {/* Feedback Form */}
+        <form onSubmit={handleSubmit} className="feedback-form">
           <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
+            <label>Student ID:</label>
             <input
               type="text"
-              name="fullName"
-              id="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              required
               className="form-input"
             />
           </div>
 
-          {/* Email */}
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
+          <input type="hidden" value={adminId} /> 
 
-          {/* First Visit */}
           <div className="form-group">
-            <label>Is this the first time you have visited the website? *</label>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="isFirstVisit"
-                  value="Yes"
-                  onChange={handleChange}
-                  required
-                />{' '}
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="isFirstVisit"
-                  value="No"
-                  onChange={handleChange}
-                  required
-                />{' '}
-                No
-              </label>
-            </div>
-          </div>
-
-          {/* Improvement Suggestions */}
-          <div className="form-group">
-            <label>What improvement do you want us to make?</label>
+            <label>Description:</label>
             <textarea
-              name="improvementSuggestions"
-              value={formData.improvementSuggestions}
-              onChange={handleChange}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
               className="form-textarea"
             />
           </div>
 
-          {/* Found What Needed */}
           <div className="form-group">
-            <label>Did you find what you needed? *</label>
-            <div>
-              <label>
-                <input
-                  type="checkbox"
-                  name="foundWhatNeeded"
-                  value="Yes, all of it"
-                  onChange={handleChange}
-                />{' '}
-                Yes, all of it
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="foundWhatNeeded"
-                  value="Yes, some of it"
-                  onChange={handleChange}
-                />{' '}
-                Yes, some of it
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="foundWhatNeeded"
-                  value="No, none of it"
-                  onChange={handleChange}
-                />{' '}
-                No, none of it
-              </label>
-            </div>
-          </div>
-
-          {/* User Friendliness */}
-          <div className="form-group">
-            <label>User Friendliness *</label>
+            <label>User Friendliness (Rate Us):</label>
             <div className="rating-emoji">
               <label>
                 <input
                   type="radio"
-                  name="userFriendliness"
+                  name="rating"
                   value="1"
-                  onChange={handleChange}
+                  onChange={(e) => setRating(e.target.value)}
                   required
                 />
                 <span role="img" aria-label="angry" className="emoji">
@@ -172,9 +93,9 @@ const FeedbackForm = () => {
               <label>
                 <input
                   type="radio"
-                  name="userFriendliness"
+                  name="rating"
                   value="2"
-                  onChange={handleChange}
+                  onChange={(e) => setRating(e.target.value)}
                 />
                 <span role="img" aria-label="sad" className="emoji">
                   😞
@@ -183,9 +104,9 @@ const FeedbackForm = () => {
               <label>
                 <input
                   type="radio"
-                  name="userFriendliness"
+                  name="rating"
                   value="3"
-                  onChange={handleChange}
+                  onChange={(e) => setRating(e.target.value)}
                 />
                 <span role="img" aria-label="neutral" className="emoji">
                   😐
@@ -194,20 +115,20 @@ const FeedbackForm = () => {
               <label>
                 <input
                   type="radio"
-                  name="userFriendliness"
+                  name="rating"
                   value="4"
-                  onChange={handleChange}
+                  onChange={(e) => setRating(e.target.value)}
                 />
                 <span role="img" aria-label="happy" className="emoji">
-                  🙂
+                  🙂 
                 </span>
               </label>
               <label>
                 <input
                   type="radio"
-                  name="userFriendliness"
+                  name="rating"
                   value="5"
-                  onChange={handleChange}
+                  onChange={(e) => setRating(e.target.value)}
                 />
                 <span role="img" aria-label="very happy" className="emoji">
                   😊
@@ -216,9 +137,8 @@ const FeedbackForm = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button type="submit" className="submit-button">
-            Send your feedback
+            Send Feedback
           </button>
         </form>
       </div>

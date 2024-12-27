@@ -1,23 +1,24 @@
-import React, { useState,useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // For navigation
 import dummyImg from "../../Assets/dummy.jpeg";
 import Profile from "../../Components/Profile/profile";
-
-
 import './header.css'; // Combined CSS
 
-const Header = ( {books, onSearch,hidepart } ) => {
+
+const Header = ({ books, onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestedBooks, setSuggestedBooks] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false); // For showing/hiding filter dropdown
   const [filterType, setFilterType] = useState('title'); // Default filter by title
-  const [isModalOpen, setModalOpen] = useState(false); 
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  // State to control the visibility of the settings page modal
-  const [isSettingsPageOpen, setSettingsPageOpen] = useState(false);
+  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+  const [isCatalogueVisible, setCatalogueVisible] = useState(false);
   const sidebarRef = useRef(null);
 
   const navigate = useNavigate();
+  const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {}; // Fetch user details safely
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -30,17 +31,11 @@ const Header = ( {books, onSearch,hidepart } ) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
   const handleLogout = () => {
-    // Clear any user-related data (e.g., tokens)
-    localStorage.removeItem('authToken'); // Example: Remove the authentication token
-    localStorage.removeItem('userInfo');  // Example: Remove user info (if applicable)
-     // Redirect to login or home page
-     navigate('/login'); // Adjust the path as per your app's routing
-
-    // Optionally, display a success message (use a toast library or alert)
+    localStorage.removeItem('userInfo'); // Clear user data
     alert('You have been logged out.');
-
-   
+    navigate('/login'); // Redirect to login page
   };
 
   const handleSearchChange = (e) => {
@@ -64,40 +59,32 @@ const Header = ( {books, onSearch,hidepart } ) => {
     onSearch(value, filterType);
   };
 
-  // Handle filter change
   const handleFilterChange = (type) => {
     setFilterType(type);
     onSearch(searchTerm, type); // Update filter and trigger search
   };
 
-  const handleBookClick = ({book,onSelectBook}) => {
+  const handleBookClick = (book) => {
     if (book && book.id) {
-      onSelectBook(book.id); // Notify parent that a book is selected
+      onSearch(book.id); // Notify parent that a book is selected
     }
   };
 
   const toggleFilter = () => setFilterVisible(!filterVisible);
 
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
-  const [isCatalogueVisible, setCatalogueVisible] = useState(false);
-  
-  const toggleSidebar = () => setSidebarExpanded(prev => !prev);
-  const toggleCatalogue = () => setCatalogueVisible(prev => !prev);
+  const toggleSidebar = () => setSidebarExpanded((prev) => !prev);
+  const toggleCatalogue = () => setCatalogueVisible((prev) => !prev);
 
-  // Handle Profile click
   const handleProfileClick = () => {
-    console.log('Profile clicked!'); // Debug to ensure this runs
     setModalOpen(true);
   };
 
-  // Close Profile Modal
-  const closeModal = () => setModalOpen(false); 
-
+  const closeModal = () => setModalOpen(false);
 
   return (
     <div>
       {/* Sidebar */}
-      <div ref={sidebarRef}  className={`sidebar ${isSidebarExpanded ? "expanded" : ""}`}>
+      <div ref={sidebarRef} className={`sidebar ${isSidebarExpanded ? "expanded" : ""}`}>
         <ul className="sidebar-items">
           {/* Book Catalogue */}
           <li onClick={toggleCatalogue}>
@@ -128,22 +115,22 @@ const Header = ( {books, onSearch,hidepart } ) => {
           </li>
           <li>
             <Link to="/feedback">
-            <i className="fas fa-comment-dots"></i> {isSidebarExpanded && "Feedback"}
+              <i className="fas fa-comment-dots"></i> {isSidebarExpanded && "Feedback"}
             </Link>
-            </li>
-          <li>
-          <Link to="/dashboarduser">
-          <i className="fas fa-tachometer-alt"></i> {isSidebarExpanded && "Dashboard"}
-          </Link>
           </li>
           <li>
-          <Link to="/settings">
-          <i className='fas fa-cogs settings-icon'></i>{isSidebarExpanded && "Settings"}
-          </Link>
+            <Link to="/dashboarduser">
+              <i className="fas fa-tachometer-alt"></i> {isSidebarExpanded && "Dashboard"}
+            </Link>
+          </li>
+          <li>
+            <Link to="/settings">
+              <i className="fas fa-cogs settings-icon"></i> {isSidebarExpanded && "Settings"}
+            </Link>
           </li>
           <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
-          <i className="fas fa-sign-out-alt"></i> {isSidebarExpanded && "Logout"}
-        </li>
+            <i className="fas fa-sign-out-alt"></i> {isSidebarExpanded && "Logout"}
+          </li>
         </ul>
       </div>
 
@@ -156,25 +143,19 @@ const Header = ( {books, onSearch,hidepart } ) => {
         <input
           type="text"
           className="search-bar"
-          placeholder={`Search by ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}...`} // Dynamic placeholder
+          placeholder={`Search by ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}...`}
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        {/* Filter Button */}
-      {!hidepart && (
-        <>
-          <button className="filter-button" onClick={toggleFilter}>
-            <i className="fas fa-filter"></i> Filter
-          </button>
-          {filterVisible && (
-            <div className="filter-dropdown">
-              <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
-              <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
-            </div>
-          )}
-        </>
-      )}
-
+        <button className="filter-button" onClick={toggleFilter}>
+          <i className="fas fa-filter"></i> Filter
+        </button>
+        {filterVisible && (
+          <div className="filter-dropdown">
+            <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
+            <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
+          </div>
+        )}
 
         {/* Suggested Books */}
         {searchTerm && suggestedBooks.length > 0 && (
@@ -193,10 +174,16 @@ const Header = ( {books, onSearch,hidepart } ) => {
         {/* Navbar Icons and Profile */}
         <div className="nav-icons">
           <i className="icon fas fa-sign-out-alt logout-icon" onClick={handleLogout}></i>
-          <div className="profile" onClick={handleProfileClick}>
-            <img src={dummyImg} alt="Profile" className="profile-pic" />
-            <span className="username">Sarah Connor</span>
-          </div>
+          <div className="profile">
+        <img
+          src={dummyImg}
+          alt="Profile"
+          className="profile-pic"
+          onClick={handleProfileClick} // Show profile modal on click
+        />
+        {/* Display username next to the profile picture */}
+        <span className="username">{userInfo?.name || "Guest"}</span>
+      </div>
         </div>
       </div>
 
@@ -204,20 +191,18 @@ const Header = ( {books, onSearch,hidepart } ) => {
       <Profile
         isOpen={isModalOpen}
         onClose={closeModal}
-        hidenpart={true}
+        email={userInfo?.email || ''}
         student={{
           profilePicture: dummyImg,
-          name: "Sarah cannor",
-          Roll: "12345",
-          email: "johndoe@mail.com",
-          batch: "2023",
-          department: "CSE",
-          address: "123, Main Street, Cityname",
-          interest: "Machine Learning, Robotics",
+          name: userInfo?.name || '',
+          id: userInfo?.id || '',
+          email: userInfo?.email || '',
+          batch: userInfo?.batch || '',
+          department: userInfo?.dept || '',
+          address: userInfo?.address || '',
+          interest: userInfo?.interest || '',
         }}
       />
-
-     
     </div>
   );
 };
