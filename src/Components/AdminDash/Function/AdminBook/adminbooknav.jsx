@@ -142,7 +142,7 @@ const BookNavBar =({
       {/* Left Section - Logo Icon */}
       <div className="booknavbar-left">
         <IconButton className="booknavbar-icon">
-          <GiBookCover size={40} color="white" />
+          <GiBookCover size={40} color="white" border="black" />
         </IconButton>
       </div>
 
@@ -219,9 +219,8 @@ const BookNavBar =({
         <IconButton className="icon-button" onClick={handleLogout}>
           <Logout/>
         </IconButton>
-        <IconButton className="icon-button">
-          <Notifications />
-        </IconButton>
+      
+     
         <IconButton className="icon-button">
           <Settings />
         </IconButton>

@@ -257,7 +257,7 @@ h2 {
 .welcome-message {
     font-size: 14px;
     font-weight: 400;
-    color: #ccc; /* Light grey color for the welcome message */
+    color:#ff6384 ; /* Light grey color for the welcome message */
 }
 
 .admin-username {
@@ -277,6 +277,7 @@ h2 {
 /* Icon Button Styling */
 .icon-button {
   color: #b0b0b0 !important; /* Regular grey color for icons with !important */
+  border:black !important;
 }
 
 

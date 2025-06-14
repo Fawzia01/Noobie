@@ -4,20 +4,22 @@ import Header from "../../../Header/header";// Make sure to import Header if you
 import "./book.css"; // CSS for grid layout
 
 // Importing book cover images
-import img1 from "../../../../Assets/chap1pic.jpeg";
-import img2 from "../../../../Assets/chap3.jpeg";
-import img3 from "../../../../Assets/chap2.jpeg";
-import img4 from "../../../../Assets/cat1.jpg";
+import img3 from "../../../../Assets/chap1pic.jpeg";
+import img1 from "../../../../Assets/book11.jpg";
+import img2 from "../../../../Assets/book12.jpg";
+import img4 from "../../../../Assets/book13.jpeg";
 import img5 from "../../../../Assets/cat2.jpg";
 import img from "../../../../Assets/storyimg.jpeg";
 
 // List of Story Books
 const storyBooks = [
-  { id: "1", title: "Harry Potter and the Philosopher's Stone", author: "J.K. Rowling", cover: img1 },
-  { id: "2", title: "The Hobbit", author: "J.R.R. Tolkien", cover: img2 },
-  { id: "3", title: "1984", author: "George Orwell", cover: img3 },
-  { id: "4", title: "To Kill a Mockingbird", author: "Harper Lee", cover: img4 },
-  { id: "5", title: "The Catcher in the Rye", author: "J.D. Salinger", cover: img5 },
+    { id: "1", title: "The Lion King", author: "Unknown", cover: img1 },
+    { id: "2", title: "The Jungle Book", author: "Rudyard Kipling", cover: img2 },
+    { id: "3", title: "Harry Potter and the Philosopher's Stone", author: "J.K. Rowling", cover: img3 },
+    { id: "4", title: "The Secret Garden", author: "Frances Hodgson Burnett", cover: img4 },
+    { id: "5", title: "The Catcher in the Rye", author: "J.D. Salinger", cover: img5 },
+
+  
 ];
 
 function StoryBooks() {

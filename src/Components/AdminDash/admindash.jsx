@@ -8,7 +8,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks"; // Icon for Boo
 import BookIcon from "@mui/icons-material/Book"; // Icon for E-books
 import PaymentIcon from "@mui/icons-material/Payment"; // Icon for Dues
 import FeedbackIcon from "@mui/icons-material/Feedback"; // Icon for Feedback
-import Feedback from './feedbackdeal';
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -48,34 +48,27 @@ function AdminDash() {
     },
     {
       title: "Total Books",
-      count: 20,
+      count: 17,
       gradient: "linear-gradient(45deg, #36a2eb, #5a8fbf)",
-      chartData: [6, 4, 5, 5],
+      chartData: [4, 5, 4, 4],
       chartType: "bar",
       icon: <BookIcon style={{ fontSize: 40, color: "white" }} />, // Icon for E-books
     },
     {
       title: "Total E-books",
-      count: 20,
+      count: 5,
       gradient: "linear-gradient(45deg, #ffce56, #ffdf74)",
       chartData: [6, 4, 5, 5],
       chartType: "bar",
       icon: <LibraryBooksIcon style={{ fontSize: 40, color: "white" }} />, // Icon for Books
     },
-    {
-      title: "Total Dues",
-      count: 150,
-      gradient: "linear-gradient(45deg, #4bc0c0, #6fe1e1)",
-      chartData: [60, 25, 10, 5],
-      chartType: "line",
-      icon: <PaymentIcon style={{ fontSize: 40, color: "white" }} />, // Icon for Dues
-    },
+  
     {
       title: "Total Feedback",
-      count: 45,
+      count: 10,
       gradient: "linear-gradient(45deg, #9966ff, #b38bff)",
-      chartData: [15, 40, 25, 20],
-      chartType: "bar",
+      chartData: [2, 3, 1, 4],
+      chartType: "line",
       icon: <FeedbackIcon style={{ fontSize: 40, color: "white" }} />, // Icon for Feedback
     },
   ];
@@ -104,7 +97,7 @@ function AdminDash() {
     labels: ["CSE", "EE", "ME", "Story"],
     datasets: [
       {
-        data: [6, 4, 5, 5],
+        data: [4, 5, 4, 4],
         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
       },
     ],
@@ -139,8 +132,8 @@ function AdminDash() {
     <div className="admin-dashboard">
       <AdminSidebar />
       <div className="admin-main-content">
-        <AdminNav />
-        <AdminWelcome />
+        
+        <AdminWelcome/>
         
         {/* Cards Section */}
         <div className="admin-dashboard-cards">

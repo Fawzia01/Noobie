@@ -3,6 +3,7 @@ import React from "react";
 import "./dashboarduser.css";
 import img1 from '../../Assets/Book4.jpeg'; // Correct image imports
 import img2 from '../../Assets/Book7.jpeg';
+import img3 from '../../Assets/book13.jpeg';
 
 const Data = [
   {
@@ -20,14 +21,15 @@ const Data = [
     published: '2023',
     author: 'Dilip Kumar Sultania',
     genre: 'Nonfiction · Computer Science · Technical · Textbook'
-  }
+  },
+
 ];
 
 const Main = () => {
   return (
     <section className='main container section'>
       <div className='secHeader'>
-        <h3 className="title">On due Books</h3>
+        <h3 className="title">Your due Books</h3>
         <button className="seeAllBtn">See All</button>
       </div>
 

@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { List, ListItemText, ListItemButton, ListItemIcon, Divider } from "@mui/material";
-import { Dashboard, Group, Book, MenuBook, MonetizationOn, Feedback, Search, AccountCircle } from '@mui/icons-material'; // Import icons
+import { Dashboard, Group, Book, MenuBook, MonetizationOn, Feedback, Search, AccountCircle ,Logout} from '@mui/icons-material'; // Import icons
 import './admindash.css';
+
+
 
 
 function AdminSidebar() {
@@ -11,6 +13,17 @@ function AdminSidebar() {
   // Define the handleNavigation function
   const handleNavigation = (path) => {
     navigate(path); // Navigate to the given path
+  };
+  const handleLogout = () => {
+    // Clear any user-related data (e.g., tokens)
+    localStorage.removeItem("authToken"); // Example: Remove the authentication token
+    localStorage.removeItem("userInfo"); // Example: Remove user info (if applicable)
+
+    // Redirect to login or home page
+    navigate("/login"); // Adjust the path as per your app's routing
+
+    // Optionally, display a success message (use a toast library or alert)
+    alert("You have been logged out.");
   };
 
   return (
@@ -54,6 +67,12 @@ function AdminSidebar() {
           </ListItemIcon>
           <ListItemText primary="E-books" />
         </ListItemButton>
+        <ListItemButton className="sidebar-item" onClick={() => handleNavigation("/adminthesis")}>
+  <ListItemIcon>
+    <Book />  {/* You can keep Book icon or choose another */}
+  </ListItemIcon>
+  <ListItemText primary="Thesis" />
+</ListItemButton>
 
         {/* Dues */}
         <ListItemButton className="sidebar-item" onClick={()=> handleNavigation('/adminpay')}>
@@ -71,6 +90,14 @@ function AdminSidebar() {
           </ListItemIcon>
           <ListItemText primary="Feedback" />
         </ListItemButton>
+
+         {/* Feedback */}
+         <ListItemButton className="sidebar-item"   onClick={handleLogout}>  
+      <ListItemIcon>
+        <Logout />
+      </ListItemIcon>
+      <ListItemText primary="Logout" />
+    </ListItemButton>
 
         <Divider /> {/* Optional Divider for separation */}
 

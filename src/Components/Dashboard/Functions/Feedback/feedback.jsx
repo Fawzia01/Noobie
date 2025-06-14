@@ -52,16 +52,7 @@ const FeedbackForm = () => {
 
         {/* Feedback Form */}
         <form onSubmit={handleSubmit} className="feedback-form">
-          <div className="form-group">
-            <label>Student ID:</label>
-            <input
-              type="text"
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
-              required
-              className="form-input"
-            />
-          </div>
+        
 
           <input type="hidden" value={adminId} /> 
 

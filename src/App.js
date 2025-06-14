@@ -28,6 +28,8 @@ import AdminEbook from './Components/AdminDash/Function/AdminEbook/adminebook';
 import AdminFeedback from './Components/AdminDash/Function/AdminFeed/adminfeed';
 import AdminPayment from './Components/AdminDash/Function/Adminpay/adminpay';
 import BorrowReturnPage from './Components/AdminDash/Function/Borrow/borrow';
+import Thesis from './Components/Dashboard/Functions/Thesis/Thesis';
+import AdminThesis from './Components/AdminDash/Function/AdminThesis/adminthesis';
 const App = () => {
   const location = useLocation();
   const [members, setMembers] = useState([]); // Initial state is an empty array
@@ -63,7 +65,9 @@ const App = () => {
      '/adminebook',
      '/adminfeed',
      '/adminpay',
-     '/borrow'
+     '/borrow',
+     '/Thesis',
+     '/adminthesis'
 
   ];
    
@@ -104,6 +108,8 @@ const App = () => {
         <Route path="/adminfeed" element={<AdminFeedback/>}/>
         <Route path="/adminpay"element={<AdminPayment/>}/>
         <Route path="/borrow" element={<BorrowReturnPage/>}/>
+        <Route path="/Thesis" element={<Thesis/>}/>
+        <Route path="/Adminthesis" element={<AdminThesis/>}/>
         </Routes>
     </div>
   );

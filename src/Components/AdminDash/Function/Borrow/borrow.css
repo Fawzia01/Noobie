@@ -25,6 +25,8 @@
     gap: 10px; /* Adds space between inputs */
     align-items: center; /* Align inputs vertically */
     margin: 10px 0; /* Adds spacing around the form */
+    width: 1200px;
+    
   }
   
   .add-record-form input, 
@@ -83,4 +85,204 @@
   .admin-feedback-table td button.delete-btn:hover {
     background-color: #d32f2f; /* Darker red on hover */
   }
-  
+  .cancel-btn
+  {
+    background-color:red;
+
+  }
+
+  .adbor-welcome-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #001f3f, #1a2a6c, #537895);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 50px;
+    width: calc(100% - 60px);
+    z-index: 1;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-left: 0px;
+    margin-top: 20px;
+
+}
+.adbor-content{
+ max-width: 1200px;
+  padding: 20px;
+  padding-left: 20px; /* Space between content and sidebar */
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  flex-grow: 1;
+  margin-left: 600px;
+}
+/* Welcome Image Styling */
+.adbor-welcome-image {
+  width: 300px; /* Size of the image reduced */
+  height: 100%;
+  background-image: url('../../../../Assets/feedback.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  min-height: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-left: 0px;
+}
+
+/* Welcome Text Styling */
+.adbor-welcome-text {
+  color: white;
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.adbor-welcome-text h1 {
+  font-family: 'Arial', sans-serif;
+  font-size: 35px;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 1px 1px 2px white;
+  text-align: left;
+}
+
+.adbor-welcome-text p {
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  margin-top: 5px;
+  color: white;
+  text-align: left;
+  line-height: 1.5;
+  margin-left: 0px;
+}
+
+
+
+
+
+
+
+.add-record-button-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.add-record-btn {
+  background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.add-record-btn:hover {
+  background-color: #0056b3;
+}
+
+.add-record-form {
+  max-width: 1500px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-left: 0px;
+}
+
+.add-record-form input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-record-form button {
+  margin: 10px 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-record-form .add-record-btn {
+  background-color: #28a745;
+  color: #fff;
+  width:100px;
+}
+
+.add-record-form .add-record-btn:hover {
+  background-color: #218838;
+}
+
+.add-record-form .cancel-btn {
+  background-color: #dc3545;
+  color: #fff;
+  width:100px;
+}
+
+.add-record-form .cancel-btn:hover {
+  background-color: #c82333;
+}
+
+.admin-borrow-table {
+  margin-left: 0px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: left;
+  margin-right: 250px;
+}
+
+.admin-borrow-table th,
+.admin-borrow-table td {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.admin-borrow-table th {
+  background-color: #007bff;
+  color:white;
+}
+
+.admin-borrow-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.admin-borrow-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.admin-borrow-table td {
+  text-align: center;
+}
+
+.edit-btn {
+  background-color:#007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.edit-btn:hover {
+  background-color: blue;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}

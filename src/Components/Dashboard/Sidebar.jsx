@@ -16,6 +16,11 @@ function Sidebar({ isExpanded }) {
             <i className="fas fa-tablet-alt"></i> {isExpanded && "eBooks"}
           </Link>
         </li>
+        <li>
+    <Link to="/thesis">
+      <i className="fas fa-book"></i> {isExpanded && "Thesis"}
+    </Link>
+  </li>
         
         <li><i className="fas fa-user"></i> {isExpanded && "Profile"}</li>
         <li><i className="fas fa-cog"></i> {isExpanded && "Settings"}</li>

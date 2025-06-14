@@ -1,57 +1,50 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './navbar.css';
 import { GiBookCover } from 'react-icons/gi';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { CiMenuBurger } from 'react-icons/ci';
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch, BiFilterAlt } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 
-
-const Navbar = () => {
+const Navbar = ({ setSearchQuery, setAuthorFilter }) => {
   const [active, setActive] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterVisible, setFilterVisible] = useState(false);
-  const filterRef = useRef(null);
+  const [localSearchQuery, setLocalSearchQuery] = useState('');
+  const [searchType, setSearchType] = useState('title');  // Track search type (title or author)
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const navigate = useNavigate();
 
-  // Temporary isLoggedIn variable (replace this with actual authentication logic)
-  const isLoggedIn = false; // Set this based on the actual authentication state
-
+  // Toggle the sidebar
   const toggleNav = () => {
     setActive(!active);
   };
 
+  // Handle search input change
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    console.log("Searching for:", searchQuery);
-  };
-
-  const toggleFilter = () => {
-    setFilterVisible(!filterVisible);
-  };
-
-  const handleRedirectToLogin = (route) => {
-    if (!isLoggedIn) {
-      navigate('/login'); // Redirect to login if not logged in
+    const query = e.target.value;
+    setLocalSearchQuery(query);
+    if (searchType === 'title') {
+      setSearchQuery(query); // Update search query by title
     } else {
-      navigate(route); // If logged in, navigate to the intended route
+      setAuthorFilter(query); // Update author filter
     }
   };
 
-  // Close filter dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (filterRef.current && !filterRef.current.contains(event.target)) {
-        setFilterVisible(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  // Handle search type change (title or author)
+  const handleSearchTypeChange = (type) => {
+    setSearchType(type);
+    setShowFilterDropdown(false); // Close dropdown after selection
+    setLocalSearchQuery(''); // Clear search input
+    if (type === 'title') {
+      setSearchQuery('');  // Reset the search query when switching to title search
+    } else {
+      setAuthorFilter(''); // Reset the author filter when switching to author search
+    }
+  };
+
+  // Redirect to login page
+  const handleRedirectToLogin = () => {
+    navigate('/login'); // Redirect to the specified route
+  };
 
   return (
     <section className="navBarSection">
@@ -66,84 +59,85 @@ const Navbar = () => {
           </a>
         </div>
 
-        <form onSubmit={handleSearchSubmit} className="searchForm">
+        {/* Search Form */}
+        <form className="searchForm">
           <div className="searchInputContainer">
             <BiSearch className="searchIcon" />
             <input
               type="text"
-              placeholder="Search for books..."
-              value={searchQuery}
+              placeholder={`Search by ${searchType}...`} // Dynamic placeholder
+              value={localSearchQuery}
               onChange={handleSearchChange}
               className="searchInput"
             />
           </div>
         </form>
 
-        <div className="navbar-actions">
-          <button className="filter-button" onClick={toggleFilter}>
-            <i className="fas fa-filter"></i> Filter
-          </button>
-
-          {filterVisible && (
-            <div className="filterDropdown" ref={filterRef}>
-              <div className="filterOption">Genre</div>
-              <div className="filterOption">Author</div>
-              <div className="filterOption">Date Published</div>
-            </div>
-          )}
-
-          <button className="login-button">
-            <Link to="/login">LOGIN</Link>
-          </button>
+        {/* Filter Icon */}
+        <div className="filterIconContainer" onClick={() => setShowFilterDropdown(!showFilterDropdown)}>
+          <BiFilterAlt className="filterIcon" />
         </div>
+
+        {/* Filter Dropdown */}
+        {showFilterDropdown && (
+          <div className="filterDropdown">
+            <div className="filterGroup">
+              <button className="filterOption" onClick={() => handleSearchTypeChange('title')}>
+                Title
+              </button>
+            </div>
+            <div className="filterGroup">
+              <button className="filterOption" onClick={() => handleSearchTypeChange('author')}>
+                Author
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Login Button */}
+        <button className="login-button">
+          <Link to="/login">LOGIN</Link>
+        </button>
 
         {/* Left Sidebar */}
         <div className={active ? 'navBar activeNavbar leftSidebar' : 'navBar leftSidebar'}>
-         {/* <AiFillCloseCircle className="closeNavbar" onClick={toggleNav} />*/}
           <ul className="navLists grid">
-
-            <li className="navItem" onClick={() => handleRedirectToLogin('/book-catalogue')}>
+            <li className="navItem" onClick={() => handleRedirectToLogin('/login')}>
               <span className="navLink">
-                <i className="fas fa-book"></i> {"Catalogue"}
+                <i className="fas fa-book"></i> Catalogue
               </span>
             </li>
-
-            <li className="navItem" onClick={() => handleRedirectToLogin('/ebooks')}>
+            <li className="navItem" onClick={() => handleRedirectToLogin('/login')}>
               <span className="navLink">
-                <i className="fas fa-tablet-alt"></i> {"E-Resource"}
+                <i className="fas fa-tablet-alt"></i> E-Resource
               </span>
             </li>
-
-            <li className="navItem" onClick={() => handleRedirectToLogin('/payment')}>
+            <li className="navItem" onClick={() => handleRedirectToLogin('/login')}>
               <span className="navLink">
-                <i className="fas fa-credit-card"></i> {"Payment"}
+                <i className="fas fa-credit-card"></i> Payment
               </span>
             </li>
-            <li className="navItem" onClick={() => handleRedirectToLogin('/feedback')}>
+            <li className="navItem" onClick={() => handleRedirectToLogin('/login')}>
               <span className="navLink">
-                <i className="fas fa-comment-dots"></i> {"Feedback"}
+                <i className="fas fa-comment-dots"></i> Feedback
               </span>
             </li>
-
-
             <li className="navItem">
-  <Link to="/about" className="navLink">
-    <i className="fas fa-info-circle"></i> About Us
-  </Link>
-</li>
-<li className="navItem">
-  <Link to="/contact" className="navLink">
-    <i className="fas fa-envelope"></i> Contact
-  </Link>
-</li>
-
+              <Link to="/about" className="navLink">
+                <i className="fas fa-info-circle"></i> About Us
+              </Link>
+            </li>
+            <li className="navItem">
+              <Link to="/contact" className="navLink">
+                <i className="fas fa-envelope"></i> Contact
+              </Link>
+            </li>
           </ul>
         </div>
-        {active && <div className="blurOverlay" onClick={toggleNav}></div>}
+        {active && <div className="blueOverlay" onClick={toggleNav}></div>}
       </header>
-    
     </section>
   );
 };
 
-export default Navbar
+export default Navbar;

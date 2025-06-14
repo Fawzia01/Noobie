@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState,useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // For navigation
 import dummyImg from "../../Assets/dummy.jpeg";
 import Profile from "../../Components/Profile/profile";
+import SettingsPage from '../Dashboard/Functions/Settings/settings';
+
+
 import './header.css'; // Combined CSS
 
-
-const Header = ({ books, onSearch }) => {
+const Header = ( {books, onSearch,hidepart } ) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestedBooks, setSuggestedBooks] = useState([]);
   const [filterVisible, setFilterVisible] = useState(false); // For showing/hiding filter dropdown
   const [filterType, setFilterType] = useState('title'); // Default filter by title
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false); 
 
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
-  const [isCatalogueVisible, setCatalogueVisible] = useState(false);
+  // State to control the visibility of the settings page modal
+  const [isSettingsPageOpen, setSettingsPageOpen] = useState(false);
   const sidebarRef = useRef(null);
 
   const navigate = useNavigate();
-  const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {}; // Fetch user details safely
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -31,12 +31,20 @@ const Header = ({ books, onSearch }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
   const handleLogout = () => {
-    localStorage.removeItem('userInfo'); // Clear user data
+    // Clear any user-related data (e.g., tokens)
+    localStorage.removeItem('authToken'); // Example: Remove the authentication token
+    localStorage.removeItem('userInfo');  // Example: Remove user info (if applicable)
+     // Redirect to login or home page
+     navigate('/login'); // Adjust the path as per your app's routing
+
+    // Optionally, display a success message (use a toast library or alert)
     alert('You have been logged out.');
-    navigate('/login'); // Redirect to login page
+
+   
   };
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -59,35 +67,43 @@ const Header = ({ books, onSearch }) => {
     onSearch(value, filterType);
   };
 
+  // Handle filter change
   const handleFilterChange = (type) => {
     setFilterType(type);
     onSearch(searchTerm, type); // Update filter and trigger search
   };
 
-  const handleBookClick = (book) => {
+  const handleBookClick = ({book,onSelectBook}) => {
     if (book && book.id) {
-      onSearch(book.id); // Notify parent that a book is selected
+      onSelectBook(book.id); // Notify parent that a book is selected
     }
   };
 
   const toggleFilter = () => setFilterVisible(!filterVisible);
 
-  const toggleSidebar = () => setSidebarExpanded((prev) => !prev);
-  const toggleCatalogue = () => setCatalogueVisible((prev) => !prev);
+  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+  const [isCatalogueVisible, setCatalogueVisible] = useState(false);
+  
+  const toggleSidebar = () => setSidebarExpanded(prev => !prev);
+  const toggleCatalogue = () => setCatalogueVisible(prev => !prev);
 
+  // Handle Profile click
   const handleProfileClick = () => {
+    console.log('Profile clicked!'); // Debug to ensure this runs
     setModalOpen(true);
   };
 
-  const closeModal = () => setModalOpen(false);
+  // Close Profile Modal
+  const closeModal = () => setModalOpen(false); 
+
 
   return (
     <div>
       {/* Sidebar */}
-      <div ref={sidebarRef} className={`sidebar ${isSidebarExpanded ? "expanded" : ""}`}>
+      <div ref={sidebarRef}  className={`sidebar ${isSidebarExpanded ? "expanded" : ""}`}>
         <ul className="sidebar-items">
           {/* Book Catalogue */}
-          <li onClick={toggleCatalogue}>
+          <li onClick={toggleCatalogue} className="grey-option">
             <div>
               <i className="fas fa-book"></i> {isSidebarExpanded && "Book Catalogue"}
             </div>
@@ -103,36 +119,54 @@ const Header = ({ books, onSearch }) => {
             </ul>
           )}
 
-          <li>
+          <li className="grey-option">
             <Link to="/ebooks">
-              <i className="fas fa-tablet-alt"></i> {isSidebarExpanded && "eBooks"}
+              <i className="fas fa-tablet-alt"></i> {isSidebarExpanded && "E-Resource"}
             </Link>
           </li>
-          <li>
+           <li className="grey-option">
+            <Link to="/Thesis">
+               <i className="fas fa-book"></i> {isSidebarExpanded && "Thesis"}
+            </Link>
+           </li>
+          <li className="grey-option">
             <Link to="/payment">
               <i className="fas fa-credit-card"></i> {isSidebarExpanded && "Payment"}
             </Link>
           </li>
-          <li>
+          <li className="grey-option">
             <Link to="/feedback">
-              <i className="fas fa-comment-dots"></i> {isSidebarExpanded && "Feedback"}
+            <i className="fas fa-comment-dots"></i> {isSidebarExpanded && "Feedback"}
             </Link>
+            </li>
+          <li className="grey-option">
+          <Link to="/dashboarduser">
+          <i className="fas fa-tachometer-alt"></i> {isSidebarExpanded && "Dashboard"}
+          </Link>
           </li>
-          <li>
-            <Link to="/dashboarduser">
-              <i className="fas fa-tachometer-alt"></i> {isSidebarExpanded && "Dashboard"}
-            </Link>
+          <li
+            className="grey-option"
+            onClick={() => setShowSettingsModal(true)}
+          >
+            <i className="fas fa-cogs settings-icon"></i>
+            {isSidebarExpanded && 'Settings'}
           </li>
-          <li>
-            <Link to="/settings">
-              <i className="fas fa-cogs settings-icon"></i> {isSidebarExpanded && "Settings"}
-            </Link>
-          </li>
-          <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
-            <i className="fas fa-sign-out-alt"></i> {isSidebarExpanded && "Logout"}
-          </li>
+          
+          
+          <li onClick={handleLogout} style={{ cursor: 'pointer' }} className="grey-option">
+          <i className="fas fa-sign-out-alt"></i> {isSidebarExpanded && "Logout"}
+        </li>
         </ul>
       </div>
+
+      {showSettingsModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <SettingsPage onClose={() => setShowSettingsModal(false)} /> {/* Pass onClose to close the modal */}
+          </div>
+        </div>
+      )}
+    
 
       {/* Top Navbar */}
       <div className="top-navbar">
@@ -143,19 +177,25 @@ const Header = ({ books, onSearch }) => {
         <input
           type="text"
           className="search-bar"
-          placeholder={`Search by ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}...`}
+          placeholder={`Search by ${filterType.charAt(0).toUpperCase() + filterType.slice(1)}...`} // Dynamic placeholder
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <button className="filter-button" onClick={toggleFilter}>
-          <i className="fas fa-filter"></i> Filter
-        </button>
-        {filterVisible && (
-          <div className="filter-dropdown">
-            <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
-            <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
-          </div>
-        )}
+        {/* Filter Button */}
+      {!hidepart && (
+        <>
+          <button className="filter-button" onClick={toggleFilter}>
+            <i className="fas fa-filter"></i> Filter
+          </button>
+          {filterVisible && (
+            <div className="filter-dropdown">
+              <div className="filter-option" onClick={() => handleFilterChange("title")}>Title</div>
+              <div className="filter-option" onClick={() => handleFilterChange("author")}>Author</div>
+            </div>
+          )}
+        </>
+      )}
+
 
         {/* Suggested Books */}
         {searchTerm && suggestedBooks.length > 0 && (
@@ -174,16 +214,10 @@ const Header = ({ books, onSearch }) => {
         {/* Navbar Icons and Profile */}
         <div className="nav-icons">
           <i className="icon fas fa-sign-out-alt logout-icon" onClick={handleLogout}></i>
-          <div className="profile">
-        <img
-          src={dummyImg}
-          alt="Profile"
-          className="profile-pic"
-          onClick={handleProfileClick} // Show profile modal on click
-        />
-        {/* Display username next to the profile picture */}
-        <span className="username">{userInfo?.name || "Guest"}</span>
-      </div>
+          <div className="profile" onClick={handleProfileClick}>
+            <img src={dummyImg} alt="Profile" className="profile-pic" />
+            <span className="username">Sarah Connor</span>
+          </div>
         </div>
       </div>
 
@@ -191,18 +225,22 @@ const Header = ({ books, onSearch }) => {
       <Profile
         isOpen={isModalOpen}
         onClose={closeModal}
-        email={userInfo?.email || ''}
+        hidenpart={true}
         student={{
           profilePicture: dummyImg,
-          name: userInfo?.name || '',
-          id: userInfo?.id || '',
-          email: userInfo?.email || '',
-          batch: userInfo?.batch || '',
-          department: userInfo?.dept || '',
-          address: userInfo?.address || '',
-          interest: userInfo?.interest || '',
+          name: "Sarah cannor",
+          Roll: "12345",
+          email: "johndoe@mail.com",
+          batch: "2023",
+          department: "CSE",
+          address: "123, Main Street, Cityname",
+          interest: "Machine Learning, Robotics",
         }}
       />
+
+
+
+     
     </div>
   );
 };

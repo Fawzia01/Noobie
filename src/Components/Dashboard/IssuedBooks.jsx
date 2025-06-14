@@ -28,7 +28,7 @@ const Data = [
     genre: 'Nonfiction · Computer Science · Technical · Textbook',
     
   },
-  {
+ /* {
     id: 3,
     bookName: 'Enceladus',
     imgSrc: img3,
@@ -36,7 +36,7 @@ const Data = [
     author: 'Charles E. Baukal, Jr., PhD (Editor)',
     genre: 'Nonfiction · Science · Technical · Textbook',
     
-  }
+  }*/
 ];
 const Challenges = [
   {
@@ -54,7 +54,7 @@ const Main = () => {
   return (
     <section className='main container section'>
       <div className='secHeader'>
-        <h3 className="title">  Issued Books</h3>
+        <h3 className="title"> Your Issued Books</h3>
         <button className="seeAllBtn">See All</button>
       </div>
 
@@ -75,23 +75,7 @@ const Main = () => {
         ))}
       </div>
 
-<div className='secHeader' style={{ marginTop: '5px' }}>
-<h3 className="title"> Participating Events</h3>
-</div>
 
-<div className='secContent grid'>
-{Challenges.map(({ id, imgSrc, challengeName, description }) => (
-  <div key={id} className="singleBook">
-    <div className="imageDiv">
-      <img src={imgSrc} alt={challengeName} />
-    </div>
-    <div className="bookDetails">
-      <h4>{challengeName}</h4>
-      <p>{description}</p>
-    </div>
-  </div>
-))};
-  </div>
   </section>
   )
 };

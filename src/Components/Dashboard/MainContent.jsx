@@ -10,7 +10,7 @@ function MainContent() {
   return (
     <div className="main-content">
       <CardSection />
-      <IssuedBooks />
+      <IssuedBooks/>
       <OnLoanBooks />
   
     </div>

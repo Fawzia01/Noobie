@@ -87,7 +87,7 @@
     border-radius: 4px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    margin-left: 150px;
+    margin-left: 400px;
     z-index: 2;
   }
   
@@ -201,3 +201,26 @@
   color: #007bff;
 }
 
+.grey-option {
+  color: grey !important;
+}
+.grey-option {
+  color: grey; /* Text color */
+}
+
+.grey-option a {
+  color: grey; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
+
+.grey-option a:hover {
+  color: darkgrey; /* Optional hover effect */
+}
+
+.grey-option i {
+  color: grey; /* Icon color */
+}
+
+.grey-option:hover {
+  background-color: #f5f5f5; /* Optional hover background for better UX */
+}
